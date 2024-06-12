@@ -1,6 +1,7 @@
 package com.matheus.fooddeliveryapi.domain.service;
 
 import com.matheus.fooddeliveryapi.domain.model.Order;
+import com.matheus.fooddeliveryapi.domain.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,12 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderTransitionStatusService {
 
     private OrderEmissionService orderEmissionService;
-    private EmailSenderService emailSenderService;
+    private OrderRepository orderRepository;
 
-    public OrderTransitionStatusService(OrderEmissionService orderEmissionService,
-                                        EmailSenderService emailSenderService) {
+    public OrderTransitionStatusService(OrderEmissionService orderEmissionService, OrderRepository orderRepository) {
         this.orderEmissionService = orderEmissionService;
-        this.emailSenderService = emailSenderService;
+        this.orderRepository = orderRepository;
     }
 
     @Transactional
@@ -21,14 +21,7 @@ public class OrderTransitionStatusService {
         Order order = orderEmissionService.search(code);
         order.confirm();
 
-        var message = EmailSenderService.Message.builder()
-                .subject("%s, %s - Pedido Confirmado".formatted(order.getClient().getName(), order.getRestaurant().getName()))
-                .body("order-confirmed.html")
-                .variable("order", order)
-                .recipient(order.getClient().getEmail())
-                .build();
-
-        emailSenderService.send(message);
+        orderRepository.save(order);
     }
 
     @Transactional
@@ -41,7 +34,8 @@ public class OrderTransitionStatusService {
     @Transactional
     public void cancel(String code) {
         Order order = orderEmissionService.search(code);
-
         order.cancel();
+
+        orderRepository.save(order);
     }
 }
