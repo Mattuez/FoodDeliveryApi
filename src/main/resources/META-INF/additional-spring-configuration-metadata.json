@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "foodDeliveryApi.email.impl",
+      "type": "java.lang.String",
+      "description": "Description for foodDeliveryApi.email.impl."
+  }
+] }
