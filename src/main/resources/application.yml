@@ -38,8 +38,6 @@ spring:
   mail:
     host: smtp.sendgrid.net
     port: 587
-    username: apikey
-    password:
 
 foodDeliveryApi:
   storage:
