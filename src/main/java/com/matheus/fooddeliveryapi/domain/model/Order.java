@@ -1,9 +1,12 @@
 package com.matheus.fooddeliveryapi.domain.model;
 
+import com.matheus.fooddeliveryapi.domain.event.OrderCanceledEvent;
+import com.matheus.fooddeliveryapi.domain.event.OrderConfirmedEvent;
 import com.matheus.fooddeliveryapi.domain.exception.BusinessException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Data
 @Entity
 @Table(name = "`order`")
-public class Order {
+public class Order extends AbstractAggregateRoot<Order> {
 
     @Id
     @GeneratedValue(
@@ -134,6 +137,8 @@ public class Order {
     public void confirm() {
         setOrderStatus(OrderStatus.CONFIRMED);
         setConfirmationDate(OffsetDateTime.now());
+
+        registerEvent(new OrderConfirmedEvent(this));
     }
 
     public void deliver() {
@@ -144,6 +149,8 @@ public class Order {
     public void cancel() {
         setOrderStatus(OrderStatus.CANCELED);
         setCancellationDate(OffsetDateTime.now());
+
+        registerEvent(new OrderCanceledEvent(this));
     }
 
     private void setOrderStatus(OrderStatus orderStatus) {
