@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -193,6 +194,21 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return handleExceptionInternal(ex, error, headers, status, request);
+    }
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        ApiErrorType errorType = ApiErrorType.ACCESS_DENIED;
+        String detail = ex.getMessage();
+
+        ApiError error = createApiErrorBuilder(status, errorType, detail)
+                .userMessage("You dont have credentials to do this")
+                .build();
+
+        return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

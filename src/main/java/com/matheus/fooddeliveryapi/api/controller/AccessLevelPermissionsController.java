@@ -2,6 +2,7 @@ package com.matheus.fooddeliveryapi.api.controller;
 
 import com.matheus.fooddeliveryapi.api.assembler.permission.PermissionDtoAssembler;
 import com.matheus.fooddeliveryapi.api.model.permission.PermissionDto;
+import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.AccessLevel;
 import com.matheus.fooddeliveryapi.domain.service.AccessLevelRegistrationService;
 import com.matheus.fooddeliveryapi.domain.service.PermissionRegistrationService;
@@ -27,6 +28,7 @@ public class AccessLevelPermissionsController {
         this.permissionRegistrationService = permissionRegistrationService;
     }
 
+    @CheckSecurity.UserGroupAccessLevel.canView
     @GetMapping
     public List<PermissionDto> getAllByAccessLevelId(@PathVariable("accessLevelId") Long accessLevelId) {
         AccessLevel accessLevel = accessLevelRegistrationService.search(accessLevelId);
@@ -34,6 +36,7 @@ public class AccessLevelPermissionsController {
         return permissionDtoAssembler.toDtoCollection(accessLevel.getPermissions());
     }
 
+    @CheckSecurity.UserGroupAccessLevel.canAlter
     @PutMapping("/{permissionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void associate(@PathVariable("accessLevelId") Long accessLevelId,
@@ -41,6 +44,7 @@ public class AccessLevelPermissionsController {
         accessLevelRegistrationService.associatePermission(accessLevelId, permissionId);
     }
 
+    @CheckSecurity.UserGroupAccessLevel.canAlter
     @DeleteMapping("/{permissionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void disassociate(@PathVariable("accessLevelId") Long accessLevelId,

@@ -2,6 +2,7 @@ package com.matheus.fooddeliveryapi.api.controller;
 
 import com.matheus.fooddeliveryapi.api.assembler.user.UserDtoAssembler;
 import com.matheus.fooddeliveryapi.api.model.user.UserDto;
+import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.Restaurant;
 import com.matheus.fooddeliveryapi.domain.service.RestaurantRegistrationService;
 import org.springframework.http.HttpStatus;
@@ -24,18 +25,21 @@ public class RestaurantAdminController {
     }
 
     @GetMapping
+    @CheckSecurity.Restaurant.canView
     public List<UserDto> getAllByRestaurantId(@PathVariable("restaurantId") Long restaurantId) {
         Restaurant restaurant = restaurantRegistrationService.search(restaurantId);
 
         return userDtoAssembler.toDtoCollection(restaurant.getAdmins());
     }
 
+    @CheckSecurity.Restaurant.canManageAdministration
     @PutMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void associate(@PathVariable("restaurantId") Long restaurantId, @PathVariable("userId") Long userId) {
         restaurantRegistrationService.associateAdmin(restaurantId, userId);
     }
 
+    @CheckSecurity.Restaurant.canManageAdministration
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void disassociate(@PathVariable("restaurantId") Long restaurantId, @PathVariable("userId") Long userId) {

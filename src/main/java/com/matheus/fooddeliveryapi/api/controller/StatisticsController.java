@@ -1,5 +1,6 @@
 package com.matheus.fooddeliveryapi.api.controller;
 
+import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.filter.DailySaleFilter;
 import com.matheus.fooddeliveryapi.domain.model.dto.DailySale;
 import com.matheus.fooddeliveryapi.domain.service.DailySaleQueryService;
@@ -28,6 +29,7 @@ public class StatisticsController {
         this.dailySaleReportService = dailySaleReportService;
     }
 
+    @CheckSecurity.Statistics.canView
     @GetMapping(path = "/daily-sales", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> findDailySalesPdf(DailySaleFilter filter,
                                                     @RequestParam(required = false, defaultValue = "+00:00") String timeOffSet) {
@@ -43,6 +45,7 @@ public class StatisticsController {
                 .body(bytesPdf);
     }
 
+    @CheckSecurity.Statistics.canView
     @GetMapping(path = "/daily-sales", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<DailySale> findDailySales(DailySaleFilter filter,
                                           @RequestParam(required = false, defaultValue = "+00:00") String timeOffSet) {

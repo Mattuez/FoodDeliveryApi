@@ -4,6 +4,7 @@ import com.matheus.fooddeliveryapi.api.assembler.product.ProductDtoAssembler;
 import com.matheus.fooddeliveryapi.api.assembler.product.ProductDtoDisassembler;
 import com.matheus.fooddeliveryapi.api.model.products.ProductDto;
 import com.matheus.fooddeliveryapi.api.model.products.ProductInputDto;
+import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.Product;
 import com.matheus.fooddeliveryapi.domain.model.Restaurant;
 import com.matheus.fooddeliveryapi.domain.service.ProductRegistrationService;
@@ -34,6 +35,7 @@ public class RestaurantProductsController {
         this.productDtoDisassembler = productDtoDisassembler;
     }
 
+    @CheckSecurity.Restaurant.canView
     @GetMapping
     public List<ProductDto> getAllByRestaurantId(@PathVariable("restaurantId") Long restaurantId,
                                                  @RequestParam(required = false) boolean includeInactive) {
@@ -45,6 +47,7 @@ public class RestaurantProductsController {
                 .toCollectionDto(productRegistrationService.searchByRestaurant(restaurant, includeInactive));
     }
 
+    @CheckSecurity.Restaurant.canView
     @GetMapping("/{productId}")
     public ProductDto getById(@PathVariable("restaurantId") Long restaurantId,
                               @PathVariable("productId") Long productId) {
@@ -52,6 +55,7 @@ public class RestaurantProductsController {
         return productDtoAssembler.toDto(productRegistrationService.search(productId, restaurantId));
     }
 
+    @CheckSecurity.Restaurant.canManageOperation
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto add(@PathVariable("restaurantId") Long restaurantId,
@@ -64,6 +68,7 @@ public class RestaurantProductsController {
         return productDtoAssembler.toDto(productRegistrationService.insert(product));
     }
 
+    @CheckSecurity.Restaurant.canManageOperation
     @PutMapping("/{productId}")
     public ProductDto update(@PathVariable("restaurantId") Long restaurantId,
                              @PathVariable("productId") Long productId,

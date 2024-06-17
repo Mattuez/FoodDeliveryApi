@@ -110,12 +110,17 @@ VALUES (1, null, 'Tambauzinho', 'Av. Pres. Epitácio Pessoa', '2458', '58045-000
        (8, 'Rua da China', 'Centro', 'Av. Xangai', '88', '69908-400', 7, 'Sabor Chinês', 7, 3, utc_timestamp,
         utc_timestamp, true, true);
 
-INSERT INTO permission (description, name)
-VALUES ('Read-only access', 'READ'),
-       ('Full access', 'WRITE'),
-       ('Admin access', 'ADMIN'),
-       ('View orders', 'VIEW_ORDERS'),
-       ('Manage users', 'MANAGE_USERS');
+INSERT INTO permission (id, name, description)
+VALUES  (1, 'EDIT_CUISINES', 'Allows editing cuisines'),
+        (2, 'UPDATE_PAYMENT_METHODS', 'Allows creating or editing payment methods'),
+        (3, 'EDIT_CITIES', 'Allows creating or editing cities'),
+        (4, 'EDIT_STATES', 'Allows creating or editing states'),
+        (5, 'VIEW_USERS', 'Allows viewing users'),
+        (6, 'EDIT_USERS', 'Allows creating or editing users'),
+        (7, 'MANAGE_RESTAURANTS', 'Allows creating, editing or managing restaurants'),
+        (8, 'VIEW_ORDERS', 'Allows viewing orders'),
+        (9, 'MANAGE_ORDERS', 'Allows managing orders'),
+        (10, 'GENERATE_REPORTS', 'Allows generate reports');
 
 INSERT INTO payment_method(id, description)
 VALUES (1, 'Cash'),
@@ -190,46 +195,46 @@ VALUES (1, 'Kung Pao Chicken', 'A classic Chinese dish with chicken, peanuts, an
 
 
 INSERT INTO access_level (id, name)
-VALUES (1, 'Basic Access'),
-       (2, 'Premium Access'),
-       (3, 'Admin Access'),
-       (4, 'Read-Only Access'),
-       (5, 'Custom Access Level');
+VALUES (1, 'Manager'),
+       (2, 'Sales Person'),
+       (3, 'Secretary'),
+       (4, 'Register');
 
-INSERT INTO access_level_permissions (access_level_id, permission_id)
-VALUES (1, 1),
-       (2, 2),
-       (3, 3),
-       (4, 4),
-       (5, 5);
+
+#Adding all permissions to manager
+INSERT INTO access_level_permissions(access_level_id, permission_id)
+SELECT 1, id FROM permission;
+
+#Adding permission to sales person
+INSERT INTO access_level_permissions(access_level_id, permission_id)
+SELECT 2, id FROM permission WHERE name LIKE 'VIEW_%';
+
+#Adding permission to secretary
+INSERT INTO access_level_permissions(access_level_id, permission_id)
+SELECT 3, id FROM permission WHERE name LIKE 'VIEW_%';
+
+#Adding permissions to resgistrar
+INSERT INTO access_level_permissions(access_level_id, permission_id)
+select 4, id from permission WHERE name LIKE '%_RESTAURANTS' or name like '%_PRODUCTS';
 
 INSERT INTO user(id, email, name, password, register_date)
-VALUES (1, 'matheuslins45@gmail.com', 'Matheus', 'ABC', utc_timestamp),
-       (2, 'Ruth@gmail.com', 'Ruth', 'DBE', utc_timestamp),
-       (3, 'ricardo.viana18@gmail.com', 'Ricardinho', 'UEAO', utc_timestamp);
+VALUES (1, 'matheuslins45@gmail.com', 'Matheus', '$2a$10$Ccv8haVOv24.VxSoQTsKPufvSo7Y6.Df9rzjGoP80m1IsJpeQvEYu', utc_timestamp),
+       (2, 'mendessruth@gmail.com', 'Ruth', '$2a$12$bB4iFWSAYMi.k..dgPENdu7o6aCJhm6D6WaZuLk3s07Lk9LbqH4.q', utc_timestamp),
+       (3, 'ricardo.viana18@gmail.com', 'Ricardo', '$2a$12$uSUiREji1NDpfAe/UwsOk.DATfSdn3aOgvKr2cS0TnexYxdcWV0Qm', utc_timestamp),
+       (4, 'example@gmail.com', 'example', '$2a$12$2G/Vv/KTTOoISwsGdjnQIeI7ZZ3ja.ULQ0lKNjvswMoSijwspQnla', utc_timestamp),
+       (5, 'restaurantOwner@gmail.com', 'restaurantOwner', '$2a$12$2G/Vv/KTTOoISwsGdjnQIeI7ZZ3ja.ULQ0lKNjvswMoSijwspQnla', utc_timestamp),
+       (6, 'client1@gmail.com', 'client', '$2a$12$2G/Vv/KTTOoISwsGdjnQIeI7ZZ3ja.ULQ0lKNjvswMoSijwspQnla', utc_timestamp),
+       (7, 'client2@gmail.com', 'client', '$2a$12$2G/Vv/KTTOoISwsGdjnQIeI7ZZ3ja.ULQ0lKNjvswMoSijwspQnla', utc_timestamp);
 
 INSERT INTO user_access_level (user_id, access_level_id)
 VALUES (1, 1),
-       (1, 2),
-       (1, 3),
-       (1, 4),
        (2, 2),
-       (2, 3),
-       (2, 5),
-       (3, 3);
+       (3, 3),
+       (4, 4);
 
 INSERT INTO restaurant_user_admin(restaurant_id, user_id)
-VALUES (1, 1),
-       (2, 1),
-       (3, 1),
-       (4, 1),
-       (5, 1),
-       (6, 1),
-       (7, 2),
-       (8, 2),
-       (5, 3),
-       (1, 3),
-       (8, 1);
+VALUES (1, 5),
+       (2, 5);
 
 -- Insert Order 1
 INSERT INTO `order` (id, code, restaurant_id, user_id, payment_method_id, address_city_id, address_postal_code,

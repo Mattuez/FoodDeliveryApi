@@ -26,4 +26,6 @@ public interface RestaurantRepository
                                      BigDecimal inicialDeliveryFee, BigDecimal finalDeliveryFee);
 
     List<Restaurant> findWithFreeDeliveryFee(String name);
+
+    boolean existsAdmins(Long restaurantId, Long userId);
 }

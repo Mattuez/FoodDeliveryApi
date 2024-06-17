@@ -6,6 +6,7 @@ import com.matheus.fooddeliveryapi.api.model.user.UserAddInputDto;
 import com.matheus.fooddeliveryapi.api.model.user.UserChangePasswordDto;
 import com.matheus.fooddeliveryapi.api.model.user.UserDto;
 import com.matheus.fooddeliveryapi.api.model.user.UserUpdateInputDto;
+import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.exception.AccessLevelNotFoundException;
 import com.matheus.fooddeliveryapi.domain.exception.BusinessException;
 import com.matheus.fooddeliveryapi.domain.model.User;
@@ -30,11 +31,13 @@ public class UserController {
         this.userDtoDisassembler = userDtoDisassembler;
     }
 
+    @CheckSecurity.UserGroupAccessLevel.canView
     @GetMapping
     public List<UserDto> getAll(){
         return userDtoAssembler.toDtoCollection(userService.searchAll());
     }
 
+    @CheckSecurity.UserGroupAccessLevel.canView
     @GetMapping("/{userId}")
     public UserDto getById(@PathVariable("userId") Long userId) {
         return userDtoAssembler.toDto(userService.search(userId));
@@ -52,6 +55,7 @@ public class UserController {
         }
     }
 
+    @CheckSecurity.UserGroupAccessLevel.canAlterUser
     @PutMapping("/{userId}")
     public UserDto update(@PathVariable("userId") Long userId,
                           @RequestBody @Valid UserUpdateInputDto source) {
@@ -66,12 +70,14 @@ public class UserController {
         }
     }
 
+    @CheckSecurity.UserGroupAccessLevel.canAlter
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remove(@PathVariable("userId") Long userId) {
         userService.exclude(userId);
     }
 
+    @CheckSecurity.UserGroupAccessLevel.canAlterOwnPassword
     @PutMapping("/{userId}/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changePassword(@PathVariable("userId") Long userId,

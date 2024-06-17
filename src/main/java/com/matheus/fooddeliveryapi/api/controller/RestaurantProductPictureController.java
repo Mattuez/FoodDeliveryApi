@@ -3,6 +3,7 @@ package com.matheus.fooddeliveryapi.api.controller;
 import com.matheus.fooddeliveryapi.api.assembler.productPicture.ProductPictureDtoAssembler;
 import com.matheus.fooddeliveryapi.api.model.products.picture.ProductPictureDto;
 import com.matheus.fooddeliveryapi.api.model.products.picture.ProductPictureInputDto;
+import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.exception.EntityNotFoundException;
 import com.matheus.fooddeliveryapi.domain.model.Product;
 import com.matheus.fooddeliveryapi.domain.model.ProductPicture;
@@ -13,12 +14,10 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +42,7 @@ public class RestaurantProductPictureController {
         this.pictureStorageService = pictureStorageService;
     }
 
+    @CheckSecurity.Restaurant.canView
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ProductPictureDto getPictureData(@PathVariable("restaurantId") Long restaurantId,
                                  @PathVariable("productId") Long productId) {
@@ -72,6 +72,7 @@ public class RestaurantProductPictureController {
         }
     }
 
+    @CheckSecurity.Restaurant.canManageOperation
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductPictureDto updatePicture(@PathVariable("restaurantId") Long restaurantId,
                                            @PathVariable("productId") Long productId, @Valid ProductPictureInputDto inputProductPicture) throws IOException {
@@ -89,6 +90,7 @@ public class RestaurantProductPictureController {
         return productPictureDtoAssembler.toDto(catalogProductPictureService.save(picture, file.getInputStream()));
     }
 
+    @CheckSecurity.Restaurant.canManageOperation
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePicture(@PathVariable("restaurantId") Long restaurantId,

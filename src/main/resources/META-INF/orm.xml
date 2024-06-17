@@ -11,4 +11,25 @@
             where cuisine.id = :cuisine_id
         </query>
     </named-query>
+
+    <named-query name="Restaurant.existsAdmins">
+        <query>
+            select case when count(1) > 0 then true else false end
+            from Restaurant rest
+            join rest.admins adm
+            where rest.id = :restaurantId
+            and adm.id = :userId
+        </query>
+    </named-query>
+
+    <named-query name="Order.isAdminFromOrder">
+        <query>
+            select case when count(1) > 0 then true else false end
+            from Order o
+            join o.restaurant rest
+            join rest.admins adm
+            where o.code = :code
+            and adm.id = :userId
+        </query>
+    </named-query>
 </entity-mappings>
