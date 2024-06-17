@@ -4,6 +4,7 @@ import com.matheus.fooddeliveryapi.api.assembler.cuisine.CuisineDTOAssembler;
 import com.matheus.fooddeliveryapi.api.assembler.cuisine.CuisineInputDTODisassembler;
 import com.matheus.fooddeliveryapi.api.model.cuisine.CuisineDTO;
 import com.matheus.fooddeliveryapi.api.model.cuisine.CuisineInputDTO;
+import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.Cuisine;
 import com.matheus.fooddeliveryapi.domain.service.CuisineRegistrationService;
 import org.springframework.data.domain.Page;
@@ -31,6 +32,7 @@ public class CuisineController {
         this.cuisineInputDTODisassembler = cuisineInputDTODisassembler;
     }
 
+    @CheckSecurity.Cuisines.CanView
     @GetMapping
     public Page<CuisineDTO> getAll(@PageableDefault(size = 10) Pageable pageable) {
         Page<Cuisine> cuisinePage = cuisineRegistrationService.searchAll(pageable);
@@ -40,6 +42,7 @@ public class CuisineController {
         return new PageImpl<>(cuisineDTOList, pageable, cuisinePage.getTotalElements());
     }
 
+    @CheckSecurity.Cuisines.CanView
     @GetMapping("/{cuisineId}")
     public CuisineDTO getById(@PathVariable("cuisineId") Long cuisineId) {
         return cuisineDTOAssembler.toDTO(
@@ -47,6 +50,7 @@ public class CuisineController {
         );
     }
 
+    @CheckSecurity.Cuisines.CanEdit
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public CuisineDTO add(@RequestBody @Valid CuisineInputDTO cuisineInputDTO) {
@@ -55,6 +59,7 @@ public class CuisineController {
         return cuisineDTOAssembler.toDTO(cuisineRegistrationService.insert(cuisine));
     }
 
+    @CheckSecurity.Cuisines.CanEdit
     @PutMapping("/{cuisineId}")
     public CuisineDTO update(@RequestBody @Valid CuisineInputDTO cuisineToBeCopied, @PathVariable("cuisineId") Long cuisineId) {
         Cuisine existingCuisine = cuisineRegistrationService.search(cuisineId);
@@ -65,6 +70,7 @@ public class CuisineController {
                 .toDTO(cuisineRegistrationService.insert(existingCuisine));
     }
 
+    @CheckSecurity.Cuisines.CanEdit
     @DeleteMapping("/{cuisineId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remove(@PathVariable("cuisineId") Long cuisineId) {

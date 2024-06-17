@@ -4,6 +4,7 @@ import com.matheus.fooddeliveryapi.api.assembler.state.StateDTOAssembler;
 import com.matheus.fooddeliveryapi.api.assembler.state.StateInputDTODisassembler;
 import com.matheus.fooddeliveryapi.api.model.state.StateDTO;
 import com.matheus.fooddeliveryapi.api.model.state.StateInputDTO;
+import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.State;
 import com.matheus.fooddeliveryapi.domain.service.StateRegistrationService;
 import org.springframework.http.HttpStatus;
@@ -28,17 +29,19 @@ public class StateController {
         this.stateInputDTODisassembler = stateInputDTODisassembler;
     }
 
+    @CheckSecurity.State.canView
     @GetMapping()
     public List<StateDTO> getAll() {
         return stateDTOAssembler.toCollectionDTO(stateRegistrationService.searchAll());
     }
 
-
+    @CheckSecurity.State.canView
     @GetMapping( "/{stateId}")
     public StateDTO getById(@PathVariable("stateId") Long stateId) {
         return stateDTOAssembler.toDTO(stateRegistrationService.search(stateId));
     }
 
+    @CheckSecurity.State.canManage
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public StateDTO add(@RequestBody @Valid StateInputDTO stateInput) {
@@ -47,6 +50,7 @@ public class StateController {
         return stateDTOAssembler.toDTO(stateRegistrationService.insert(state));
     }
 
+    @CheckSecurity.State.canManage
     @PutMapping("/{stateId}")
     public StateDTO updateState(@RequestBody @Valid StateInputDTO stateToBeCopied, @PathVariable("stateId") Long stateId) {
         State existingState = stateRegistrationService.search(stateId);
@@ -56,6 +60,7 @@ public class StateController {
         return stateDTOAssembler.toDTO(stateRegistrationService.insert(existingState));
     }
 
+    @CheckSecurity.State.canManage
     @DeleteMapping("/{stateId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remove(@PathVariable("stateId") Long stateId) {

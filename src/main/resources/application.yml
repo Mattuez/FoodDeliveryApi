@@ -40,6 +40,15 @@ spring:
     port: 587
     username: apikey
     password:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:keys/foodDelivery-pkey.pem
+        #opaquetoken:
+          #introspection-uri: http://localhost:8081/oauth/check_token
+          #client-id: checkToken
+          #client-secret: check123
 
 foodDeliveryApi:
   storage:

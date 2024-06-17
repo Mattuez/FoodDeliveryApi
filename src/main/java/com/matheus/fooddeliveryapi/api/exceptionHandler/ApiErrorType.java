@@ -12,6 +12,7 @@ public enum ApiErrorType {
     INVALID_PROPERTY("/invalid-property", "Body has a invalid property"),
     INVALID_PARAMETER("/invalid-parameter", "Invalid parameter in the URL"),
     SYSTEM_ERROR("/system-error", "A system error occurred"),
+    ACCESS_DENIED("/access-denied", "Access denied"),
     INVALID_DATA("/invalid-data", "Invalid Data");
 
     private String uri;

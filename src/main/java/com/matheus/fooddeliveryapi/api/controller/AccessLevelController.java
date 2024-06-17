@@ -4,6 +4,7 @@ import com.matheus.fooddeliveryapi.api.assembler.accessLevel.AccessLevelDtoAssem
 import com.matheus.fooddeliveryapi.api.assembler.accessLevel.AccessLevelDtoDisassembler;
 import com.matheus.fooddeliveryapi.api.model.accessLevel.AccessLevelDto;
 import com.matheus.fooddeliveryapi.api.model.accessLevel.AccessLevelInputDto;
+import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.exception.BusinessException;
 import com.matheus.fooddeliveryapi.domain.exception.PermissionNotFoundException;
 import com.matheus.fooddeliveryapi.domain.model.AccessLevel;
@@ -31,16 +32,19 @@ public class AccessLevelController {
         this.accessLevelDtoDisassembler = accessLevelDtoDisassembler;
     }
 
+    @CheckSecurity.UserGroupAccessLevel.canView
     @GetMapping
     public List<AccessLevelDto> getAll() {
         return accessLevelDtoAssembler.toDtoCollection(accessLevelRegistrationService.searchAll());
     }
 
+    @CheckSecurity.UserGroupAccessLevel.canView
     @GetMapping("/{accessLevelId}")
     public AccessLevelDto getById(@PathVariable("accessLevelId") Long accessLevelId) {
         return accessLevelDtoAssembler.toDto(accessLevelRegistrationService.search(accessLevelId));
     }
 
+    @CheckSecurity.UserGroupAccessLevel.canAlter
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AccessLevelDto add(@RequestBody @Valid AccessLevelInputDto accessLevelInputDto) {
@@ -53,6 +57,7 @@ public class AccessLevelController {
         }
     }
 
+    @CheckSecurity.UserGroupAccessLevel.canAlter
     @PutMapping("/{accessLevelId}")
     public AccessLevelDto update(@PathVariable("accessLevelId") Long accessLevelId,
                               @RequestBody @Valid AccessLevelInputDto source) {
@@ -67,6 +72,7 @@ public class AccessLevelController {
         }
     }
 
+    @CheckSecurity.UserGroupAccessLevel.canAlter
     @DeleteMapping("/{accessLevelId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remove(@PathVariable("accessLevelId") Long accessLevelId) {

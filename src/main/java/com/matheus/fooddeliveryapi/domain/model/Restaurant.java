@@ -123,6 +123,9 @@ public class Restaurant {
     )
     private List<Product> products = new ArrayList<>();
 
+    @OneToMany(mappedBy = "restaurant")
+    private List<Order> orders = new ArrayList<>();
+
     public void activate() {
         this.setActive(true);
     }
