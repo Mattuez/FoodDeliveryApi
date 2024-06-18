@@ -23,7 +23,7 @@ public class ClientNotificationOrderConfirmedListener {
 
         var message = EmailSenderService.Message.builder()
                 .subject("%s, %s - Pedido Confirmado".formatted(order.getClient().getName(), order.getRestaurant().getName()))
-                .body("order-confirmed.html")
+                .body("email/order-confirmed.html")
                 .variable("order", order)
                 .recipient(order.getClient().getEmail())
                 .build();
