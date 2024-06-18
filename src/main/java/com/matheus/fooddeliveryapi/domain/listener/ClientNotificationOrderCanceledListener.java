@@ -22,7 +22,7 @@ public class ClientNotificationOrderCanceledListener {
 
         var message = EmailSenderService.Message.builder()
                 .subject("%s, %s - Pedido Cancelado".formatted(order.getClient().getName(), order.getRestaurant().getName()))
-                .body("order-canceled.html")
+                .body("email/order-canceled.html")
                 .variable("order", order)
                 .recipient(order.getClient().getEmail())
                 .build();
