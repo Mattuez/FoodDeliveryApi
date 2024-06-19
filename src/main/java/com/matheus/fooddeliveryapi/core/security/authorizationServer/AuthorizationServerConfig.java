@@ -15,11 +15,13 @@ import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
+import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 
 @Configuration
@@ -30,13 +32,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private AuthenticationManager authenticationManager;
     private UserDetailsService userDetailsService;
     private JwtKeyStoreProperties jwtKeyStoreProperties;
+    private DataSource dataSource;
 
     public AuthorizationServerConfig(PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager,
-                                     UserDetailsService userDetailsService, JwtKeyStoreProperties jwtKeyStoreProperties) {
+                                     UserDetailsService userDetailsService, JwtKeyStoreProperties jwtKeyStoreProperties,
+                                     DataSource dataSource) {
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.jwtKeyStoreProperties = jwtKeyStoreProperties;
+        this.dataSource = dataSource;
     }
 
     @Override
@@ -73,6 +78,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
+                .authorizationCodeServices(new JdbcAuthorizationCodeServices(this.dataSource))
                 .reuseRefreshTokens(false)
                 .accessTokenConverter(jwtAccessTokenConverter())
                 .tokenEnhancer(enhancerChain)

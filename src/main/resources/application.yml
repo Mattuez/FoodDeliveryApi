@@ -1,13 +1,15 @@
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/fooddeliveryapi?createDatabaseIfNotExist=true&serverTimeZone=UTC
+    url: jdbc:mysql://${DB_HOST:localhost}/fooddeliveryapi?createDatabaseIfNotExist=true&serverTimeZone=UTC
     username: root
-    password:
+    password: ${DB_PASSWORD:M_th__s03!}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 10
       minimum-idle: 10
       idle-timeout: 10000
+  session:
+    store-type: none
   jackson:
     deserialization:
       fail-on-unknown-properties: true
@@ -53,7 +55,7 @@ spring:
 foodDeliveryApi:
   storage:
     local:
-      pictures-directory: /Users/mathe_0dd5ya5/Documents/catalogo
+      pictures-directory: src/main/resources/photos
   email:
     sender: FoodDelivery <fooddeliveryapiteste@gmail.com>
     impl: sand_box

@@ -1,0 +1,50 @@
+networks:
+  food-delivery-network:
+    driver: bridge
+
+services:
+  food-delivery-mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: M_th__s03!
+    ports:
+      - "3307:3306"
+    networks:
+      - food-delivery-network
+
+  food-delivery-redis:
+    image: redis:6.2.1-alpine
+    networks:
+      - food-delivery-network
+
+  food-delivery-api:
+    build:
+      .
+    command:
+      - "/wait-for-it.sh"
+      - "food-delivery-mysql:3307"
+      - "-t"
+      - "30"
+      - "--"
+      - "java"
+      - "-jar"
+      - "api.jar"
+    environment:
+      DB_HOST: food-delivery-mysql
+      DB_PASSWORD: M_th__s03!
+      SPRING_SESSION_STORE_TYPE: redis
+      SPRING_REDIS_HOST: food-delivery-redis
+    networks:
+      - food-delivery-network
+    depends_on:
+      - food-delivery-mysql
+
+  food-delivery-proxy:
+    build: ./nginx
+    image: food-delivery-proxy
+    ports:
+      - "80:80"
+    networks:
+      - food-delivery-network
+    depends_on:
+      - food-delivery-api
