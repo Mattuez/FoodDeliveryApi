@@ -1,5 +1,10 @@
 SET foreign_key_checks = 0;
 
+lock tables access_level write, access_level_permissions write, city write, cuisine write,
+payment_method write, permission write, product write, restaurant write,
+restaurant_payment_methods write, state write, user write, user_access_level write,
+    restaurant_user_admin write, `order` write, ordered_product write, product_picture write;
+
 DELETE
 FROM access_level;
 DELETE
@@ -364,3 +369,5 @@ VALUES
     (2, 20.00, 14.00, 9, 15, 'Spicy'),
     (1, 15.00, 15.00, 9, 16, 'No soy sauce'),
     (1, 15.00, 15.00, 9, 16, 'No soy sauce');;
+
+UNLOCK TABLES;
