@@ -21,11 +21,12 @@ A API Delivery oferece endpoints para gerenciar usuários, restaurantes, produto
 - Balanceamento de Carga: Nginx
 
 # Como usar
-- Git clone https://github.com/Mattuez/FoodDeliveryApi.git
-- ./mvnw clean package
+- Clonar o Repositório: git clone https://github.com/Mattuez/FoodDeliveryApi.git
+- Build: ./mvnw clean package
 - docker-compose up --scale food-delivery-api=2
-- Pronto a aplicação está rodando. Consulte a documentação para ver os endpoints.
-- Infelizmente a feature de envio de emails transacionais precisa de uma chave privada que não pode ser disponibilizada aqui. Caso tenha interesse entre em contato comigo
+- Executar: docker-compose up --scale food-delivery-api=2
+- A aplicação estará rodando. Consulte a documentação para ver os endpoints disponíveis.
 
 # Obseravações
-- O projeto ainda está em desenvolvimento. Pretendo implantar o upload de imagens para Amazon s3 e coloca-lo em produção na nuvem.
+- Envio de Emails: A funcionalidade de envio de emails transacionais requer uma chave privada que não pode ser disponibilizada publicamente. Entre em contato para mais informações.
+- Em Desenvolvimento: O projeto ainda está em desenvolvimento e futuras melhorias incluem a migração do armazenamento de imagens para Amazon S3 e a implantação em produção na nuvem.
