@@ -10,6 +10,7 @@ A API Delivery oferece endpoints para gerenciar usuários, restaurantes, produto
 - Dockerização: Facilita a implantação e escalabilidade da aplicação.
 - Balanceamento de Carga: Nginx para implantação de Poor's Man Load Balance.
 - Versionamento do Banco de Dados: Flyway para gerenciar as migrações do banco de dados MySQL.
+- Endpoint de geração de Jasper Reports
 - Upload de imagens, armazenando-as em uma pasta local e disponibilizando-as para consulta posterior, facilitando a gestão de fotos de produtos.
 
 # Tecnologias Utilizadas
