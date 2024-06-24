@@ -4,6 +4,7 @@ import com.matheus.fooddeliveryapi.api.assembler.product.ProductDtoAssembler;
 import com.matheus.fooddeliveryapi.api.assembler.product.ProductDtoDisassembler;
 import com.matheus.fooddeliveryapi.api.model.products.ProductDto;
 import com.matheus.fooddeliveryapi.api.model.products.ProductInputDto;
+import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.RestaurantProductOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.Product;
 import com.matheus.fooddeliveryapi.domain.model.Restaurant;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/restaurants/{restaurantId}/products")
-public class RestaurantProductsController {
+public class RestaurantProductsController implements RestaurantProductOpenApi {
 
     private ProductRegistrationService productRegistrationService;
     private RestaurantRegistrationService restaurantRegistrationService;
@@ -35,6 +36,7 @@ public class RestaurantProductsController {
         this.productDtoDisassembler = productDtoDisassembler;
     }
 
+    @Override
     @CheckSecurity.Restaurant.canView
     @GetMapping
     public List<ProductDto> getAllByRestaurantId(@PathVariable("restaurantId") Long restaurantId,
@@ -47,6 +49,7 @@ public class RestaurantProductsController {
                 .toCollectionDto(productRegistrationService.searchByRestaurant(restaurant, includeInactive));
     }
 
+    @Override
     @CheckSecurity.Restaurant.canView
     @GetMapping("/{productId}")
     public ProductDto getById(@PathVariable("restaurantId") Long restaurantId,
@@ -55,6 +58,7 @@ public class RestaurantProductsController {
         return productDtoAssembler.toDto(productRegistrationService.search(productId, restaurantId));
     }
 
+    @Override
     @CheckSecurity.Restaurant.canManageOperation
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -68,6 +72,7 @@ public class RestaurantProductsController {
         return productDtoAssembler.toDto(productRegistrationService.insert(product));
     }
 
+    @Override
     @CheckSecurity.Restaurant.canManageOperation
     @PutMapping("/{productId}")
     public ProductDto update(@PathVariable("restaurantId") Long restaurantId,

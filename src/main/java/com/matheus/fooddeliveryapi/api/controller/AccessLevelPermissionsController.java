@@ -2,6 +2,7 @@ package com.matheus.fooddeliveryapi.api.controller;
 
 import com.matheus.fooddeliveryapi.api.assembler.permission.PermissionDtoAssembler;
 import com.matheus.fooddeliveryapi.api.model.permission.PermissionDto;
+import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.AccessLevelPermissionsOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.AccessLevel;
 import com.matheus.fooddeliveryapi.domain.service.AccessLevelRegistrationService;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/accessLevel/{accessLevelId}/permissions")
-public class AccessLevelPermissionsController {
+public class AccessLevelPermissionsController implements AccessLevelPermissionsOpenApi {
 
     public AccessLevelRegistrationService accessLevelRegistrationService;
     public PermissionRegistrationService permissionRegistrationService;
@@ -28,6 +29,7 @@ public class AccessLevelPermissionsController {
         this.permissionRegistrationService = permissionRegistrationService;
     }
 
+    @Override
     @CheckSecurity.UserGroupAccessLevel.canView
     @GetMapping
     public List<PermissionDto> getAllByAccessLevelId(@PathVariable("accessLevelId") Long accessLevelId) {
@@ -36,6 +38,7 @@ public class AccessLevelPermissionsController {
         return permissionDtoAssembler.toDtoCollection(accessLevel.getPermissions());
     }
 
+    @Override
     @CheckSecurity.UserGroupAccessLevel.canAlter
     @PutMapping("/{permissionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -44,6 +47,7 @@ public class AccessLevelPermissionsController {
         accessLevelRegistrationService.associatePermission(accessLevelId, permissionId);
     }
 
+    @Override
     @CheckSecurity.UserGroupAccessLevel.canAlter
     @DeleteMapping("/{permissionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

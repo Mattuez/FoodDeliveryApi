@@ -4,6 +4,7 @@ import com.matheus.fooddeliveryapi.api.assembler.paymentMethod.PaymentMethodDtoA
 import com.matheus.fooddeliveryapi.api.assembler.paymentMethod.PaymentMethodDtoDisassembler;
 import com.matheus.fooddeliveryapi.api.model.paymentMethod.PaymentMethodDto;
 import com.matheus.fooddeliveryapi.api.model.paymentMethod.PaymentMethodInputDto;
+import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.PaymentMethodOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.PaymentMethod;
 import com.matheus.fooddeliveryapi.domain.service.PaymentMethodRegistrationService;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("paymentMethods")
-public class PaymentMethodController {
+public class PaymentMethodController implements PaymentMethodOpenApi {
 
     private PaymentMethodRegistrationService paymentMethodRegistrationService;
     private PaymentMethodDtoAssembler paymentMethodDtoAssembler;
@@ -29,18 +30,21 @@ public class PaymentMethodController {
         this.paymentMethodDtoDisassembler = paymentMethodDtoDisassembler;
     }
 
+    @Override
     @CheckSecurity.PaymentMethod.canView
     @GetMapping
     public List<PaymentMethodDto> getAll() {
         return paymentMethodDtoAssembler.toCollectionDto(paymentMethodRegistrationService.searchAll());
     }
 
+    @Override
     @CheckSecurity.PaymentMethod.canView
     @GetMapping("/{paymentMethodId}")
     public PaymentMethodDto getById(@PathVariable("paymentMethodId") Long paymentMethodId) {
         return paymentMethodDtoAssembler.toDto(paymentMethodRegistrationService.search(paymentMethodId));
     }
 
+    @Override
     @CheckSecurity.PaymentMethod.canManage
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -50,6 +54,7 @@ public class PaymentMethodController {
         return paymentMethodDtoAssembler.toDto(paymentMethodRegistrationService.insert(paymentMethod));
     }
 
+    @Override
     @CheckSecurity.PaymentMethod.canManage
     @PutMapping("/{paymentMethodId}")
     public PaymentMethodDto update(@PathVariable("paymentMethodId") Long paymentMethodId,
@@ -62,6 +67,7 @@ public class PaymentMethodController {
         return paymentMethodDtoAssembler.toDto(paymentMethodRegistrationService.insert(paymentMethod));
     }
 
+    @Override
     @CheckSecurity.PaymentMethod.canManage
     @DeleteMapping("/{paymentMethodId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

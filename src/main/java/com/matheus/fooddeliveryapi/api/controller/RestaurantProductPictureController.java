@@ -3,6 +3,7 @@ package com.matheus.fooddeliveryapi.api.controller;
 import com.matheus.fooddeliveryapi.api.assembler.productPicture.ProductPictureDtoAssembler;
 import com.matheus.fooddeliveryapi.api.model.products.picture.ProductPictureDto;
 import com.matheus.fooddeliveryapi.api.model.products.picture.ProductPictureInputDto;
+import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.RestaurantProductPictureOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.exception.EntityNotFoundException;
 import com.matheus.fooddeliveryapi.domain.model.Product;
@@ -25,7 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/restaurants/{restaurantId}/products/{productId}/picture")
-public class RestaurantProductPictureController {
+public class RestaurantProductPictureController implements RestaurantProductPictureOpenApi {
 
     private CatalogProductPictureService catalogProductPictureService;
     private ProductRegistrationService productRegistrationService;
@@ -42,6 +43,7 @@ public class RestaurantProductPictureController {
         this.pictureStorageService = pictureStorageService;
     }
 
+    @Override
     @CheckSecurity.Restaurant.canView
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ProductPictureDto getPictureData(@PathVariable("restaurantId") Long restaurantId,
@@ -49,6 +51,7 @@ public class RestaurantProductPictureController {
         return productPictureDtoAssembler.toDto(catalogProductPictureService.search(productId, restaurantId));
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<InputStreamResource> getPicture(@PathVariable("restaurantId") Long restaurantId,
                                                           @PathVariable("productId") Long productId,
@@ -72,6 +75,7 @@ public class RestaurantProductPictureController {
         }
     }
 
+    @Override
     @CheckSecurity.Restaurant.canManageOperation
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductPictureDto updatePicture(@PathVariable("restaurantId") Long restaurantId,
@@ -90,6 +94,7 @@ public class RestaurantProductPictureController {
         return productPictureDtoAssembler.toDto(catalogProductPictureService.save(picture, file.getInputStream()));
     }
 
+    @Override
     @CheckSecurity.Restaurant.canManageOperation
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)

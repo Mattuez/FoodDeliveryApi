@@ -2,6 +2,7 @@ package com.matheus.fooddeliveryapi.api.controller;
 
 import com.matheus.fooddeliveryapi.api.assembler.accessLevel.AccessLevelDtoAssembler;
 import com.matheus.fooddeliveryapi.api.model.accessLevel.AccessLevelDto;
+import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.UserAccessLevelOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.User;
 import com.matheus.fooddeliveryapi.domain.service.AccessLevelRegistrationService;
@@ -13,17 +14,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user/{userId}/accessLevel")
-public class UserAccessLevelController {
+public class UserAccessLevelController implements UserAccessLevelOpenApi {
 
     private UserRegistrationService userRegistrationService;
-    private AccessLevelRegistrationService accessLevelRegistrationService;
     private AccessLevelDtoAssembler accessLevelDtoAssembler;
 
     public UserAccessLevelController(UserRegistrationService userRegistrationService,
-                                     AccessLevelRegistrationService accessLevelRegistrationService,
                                      AccessLevelDtoAssembler accessLevelDtoAssembler) {
         this.userRegistrationService = userRegistrationService;
-        this.accessLevelRegistrationService = accessLevelRegistrationService;
         this.accessLevelDtoAssembler = accessLevelDtoAssembler;
     }
 

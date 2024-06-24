@@ -2,6 +2,7 @@ package com.matheus.fooddeliveryapi.api.controller;
 
 import com.matheus.fooddeliveryapi.api.assembler.user.UserDtoAssembler;
 import com.matheus.fooddeliveryapi.api.model.user.UserDto;
+import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.RestaurantAdminOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.Restaurant;
 import com.matheus.fooddeliveryapi.domain.service.RestaurantRegistrationService;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/restaurants/{restaurantId}/admins")
-public class RestaurantAdminController {
+public class RestaurantAdminController implements RestaurantAdminOpenApi {
 
     private RestaurantRegistrationService restaurantRegistrationService;
     private UserDtoAssembler userDtoAssembler;
@@ -24,6 +25,7 @@ public class RestaurantAdminController {
         this.userDtoAssembler = userDtoAssembler;
     }
 
+    @Override
     @GetMapping
     @CheckSecurity.Restaurant.canView
     public List<UserDto> getAllByRestaurantId(@PathVariable("restaurantId") Long restaurantId) {
@@ -32,6 +34,7 @@ public class RestaurantAdminController {
         return userDtoAssembler.toDtoCollection(restaurant.getAdmins());
     }
 
+    @Override
     @CheckSecurity.Restaurant.canManageAdministration
     @PutMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -39,6 +42,7 @@ public class RestaurantAdminController {
         restaurantRegistrationService.associateAdmin(restaurantId, userId);
     }
 
+    @Override
     @CheckSecurity.Restaurant.canManageAdministration
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

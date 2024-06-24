@@ -1,5 +1,6 @@
 package com.matheus.fooddeliveryapi.api.controller;
 
+import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.OrderStatusOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.service.OrderTransitionStatusService;
 import org.springframework.http.HttpStatus;
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/orders/{orderId}")
-public class OrderStatusController {
+public class OrderStatusController implements OrderStatusOpenApi {
 
     private OrderTransitionStatusService orderTransitionStatusService;
 
@@ -16,6 +17,7 @@ public class OrderStatusController {
         this.orderTransitionStatusService = orderTransitionStatusService;
     }
 
+    @Override
     @CheckSecurity.Order.canManage
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/confirmation")
@@ -23,6 +25,7 @@ public class OrderStatusController {
         orderTransitionStatusService.confirm(code);
     }
 
+    @Override
     @CheckSecurity.Order.canManage
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/delivery")
@@ -30,6 +33,7 @@ public class OrderStatusController {
         orderTransitionStatusService.deliver(code);
     }
 
+    @Override
     @CheckSecurity.Order.canManage
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/cancellation")

@@ -6,6 +6,7 @@ import com.matheus.fooddeliveryapi.api.model.user.UserAddInputDto;
 import com.matheus.fooddeliveryapi.api.model.user.UserChangePasswordDto;
 import com.matheus.fooddeliveryapi.api.model.user.UserDto;
 import com.matheus.fooddeliveryapi.api.model.user.UserUpdateInputDto;
+import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.UserOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.exception.AccessLevelNotFoundException;
 import com.matheus.fooddeliveryapi.domain.exception.BusinessException;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController implements UserOpenApi {
 
     private UserRegistrationService userService;
     private UserDtoAssembler userDtoAssembler;
