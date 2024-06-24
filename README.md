@@ -26,7 +26,8 @@ A API Delivery oferece endpoints para gerenciar usuários, restaurantes, produto
 - Build: ./mvnw clean package
 - docker-compose up --scale food-delivery-api=2
 - Executar: docker-compose up --scale food-delivery-api=2
-- A aplicação estará rodando. Consulte a documentação para ver os endpoints disponíveis. Documentação ainda em desenvolvimento (http://localhost:8080/swagger-ui/index.html).
+- A aplicação estará rodando.
+- Consulte a documentação para ver os endpoints disponíveis (http://localhost/swagger-ui/index.html).
 
 # Obseravações
 - Envio de Emails: A funcionalidade de envio de emails transacionais requer uma chave privada que não pode ser disponibilizada publicamente. Entre em contato para mais informações.
