@@ -2,6 +2,7 @@ package com.matheus.fooddeliveryapi.api.controller;
 
 import com.matheus.fooddeliveryapi.api.assembler.paymentMethod.PaymentMethodDtoAssembler;
 import com.matheus.fooddeliveryapi.api.model.paymentMethod.PaymentMethodDto;
+import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.RestaurantPaymentMethodOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.Restaurant;
 import com.matheus.fooddeliveryapi.domain.service.RestaurantRegistrationService;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/restaurants/{restaurantId}/paymentMethods")
-public class RestaurantPaymentMethodController {
+public class RestaurantPaymentMethodController implements RestaurantPaymentMethodOpenApi {
 
     private RestaurantRegistrationService restaurantService;
     private PaymentMethodDtoAssembler paymentMethodDtoAssembler;

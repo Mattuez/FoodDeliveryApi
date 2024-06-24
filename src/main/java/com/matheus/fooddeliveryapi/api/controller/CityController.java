@@ -4,6 +4,7 @@ import com.matheus.fooddeliveryapi.api.assembler.city.CityDTOAssembler;
 import com.matheus.fooddeliveryapi.api.assembler.city.CityInputDTODisassembler;
 import com.matheus.fooddeliveryapi.api.model.city.CityDTO;
 import com.matheus.fooddeliveryapi.api.model.city.CityInputDTO;
+import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.CityOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.exception.BusinessException;
 import com.matheus.fooddeliveryapi.domain.exception.EntityNotFoundException;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cities")
-public class CityController {
+public class CityController implements CityOpenApi {
 
     private CityRegistrationService cityRegistrationService;
     private CityDTOAssembler cityDTOAssembler;
@@ -32,18 +33,21 @@ public class CityController {
         this.cityInputDTODisassembler = cityInputDTODisassembler;
     }
 
+    @Override
     @CheckSecurity.City.canView
     @GetMapping
     public List<CityDTO> getAll() {
         return cityDTOAssembler.toCollectionDTO(cityRegistrationService.searchAll());
     }
 
+    @Override
     @CheckSecurity.City.canView
     @GetMapping("/{cityId}")
     public CityDTO getById(@PathVariable("cityId") Long cityId) {
         return cityDTOAssembler.toDTO(cityRegistrationService.search(cityId));
     }
 
+    @Override
     @CheckSecurity.City.canManage
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
@@ -57,6 +61,7 @@ public class CityController {
         }
     }
 
+    @Override
     @CheckSecurity.City.canManage
     @PutMapping("/{cityId}")
     public CityDTO update(@RequestBody @Valid CityInputDTO cityToBeCopied, @PathVariable("cityId") Long cityId) {
@@ -71,6 +76,7 @@ public class CityController {
         }
     }
 
+    @Override
     @CheckSecurity.City.canManage
     @DeleteMapping("/{cityId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

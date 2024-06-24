@@ -7,6 +7,7 @@ import com.matheus.fooddeliveryapi.api.model.order.OrderDto;
 import com.matheus.fooddeliveryapi.api.model.order.OrderInputDto;
 import com.matheus.fooddeliveryapi.api.model.order.OrderResumeDto;
 import com.matheus.fooddeliveryapi.core.data.PageableTranslator;
+import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.OrderOpenApi;
 import com.matheus.fooddeliveryapi.core.security.AuthenticationSecurity;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.filter.OrderFilter;
@@ -25,7 +26,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/orders")
-public class OrderController {
+public class OrderController implements OrderOpenApi {
 
     private OrderEmissionService orderEmissionService;
     private OrderDtoAssembler orderDtoAssembler;

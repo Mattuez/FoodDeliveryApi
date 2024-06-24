@@ -54,6 +54,9 @@ spring:
           #client-id: checkToken
           #client-secret: check123
 
+server:
+  forward-headers-strategy: native
+
 foodDeliveryApi:
   storage:
     local:

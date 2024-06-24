@@ -4,6 +4,7 @@ import com.matheus.fooddeliveryapi.api.assembler.restaurant.RestaurantDTOAssembl
 import com.matheus.fooddeliveryapi.api.assembler.restaurant.RestaurantInputDTODisassembler;
 import com.matheus.fooddeliveryapi.api.model.restaurant.RestaurantDTO;
 import com.matheus.fooddeliveryapi.api.model.restaurant.RestaurantInputDTO;
+import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.RestaurantOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.exception.BusinessException;
 import com.matheus.fooddeliveryapi.domain.exception.CityNotFoundException;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/restaurants")
-public class RestaurantController {
+public class RestaurantController implements RestaurantOpenApi {
 
     private RestaurantRegistrationService restaurantRegistrationService;
     private SmartValidator smartValidator;

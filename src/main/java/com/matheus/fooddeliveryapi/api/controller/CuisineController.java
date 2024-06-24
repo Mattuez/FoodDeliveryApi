@@ -4,6 +4,7 @@ import com.matheus.fooddeliveryapi.api.assembler.cuisine.CuisineDTOAssembler;
 import com.matheus.fooddeliveryapi.api.assembler.cuisine.CuisineInputDTODisassembler;
 import com.matheus.fooddeliveryapi.api.model.cuisine.CuisineDTO;
 import com.matheus.fooddeliveryapi.api.model.cuisine.CuisineInputDTO;
+import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.CuisineOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.Cuisine;
 import com.matheus.fooddeliveryapi.domain.service.CuisineRegistrationService;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cuisines")
-public class CuisineController {
+public class CuisineController implements CuisineOpenApi {
     private CuisineRegistrationService cuisineRegistrationService;
     private CuisineDTOAssembler cuisineDTOAssembler;
     private CuisineInputDTODisassembler cuisineInputDTODisassembler;
