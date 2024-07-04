@@ -11,7 +11,7 @@ A API Delivery oferece endpoints para gerenciar usuários, restaurantes, produto
 - Balanceamento de Carga: Nginx para implantação de Poor's Man Load Balance.
 - Versionamento do Banco de Dados: Flyway para gerenciar as migrações do banco de dados MySQL.
 - Endpoint de geração de Jasper Reports
-- Upload de imagens, armazenando-as em uma pasta local e disponibilizando-as para consulta posterior, facilitando a gestão de fotos de produtos.
+- Upload de imagens, armazenando-as em uma pasta local ou na Amazon S3
 
 # Tecnologias Utilizadas
 - Backend: Spring Boot, Spring Data JPA, Spring Mail
@@ -31,4 +31,4 @@ A API Delivery oferece endpoints para gerenciar usuários, restaurantes, produto
 
 # Obseravações
 - Envio de Emails: A funcionalidade de envio de emails transacionais requer uma chave privada que não pode ser disponibilizada publicamente. Entre em contato para mais informações.
-- Em Desenvolvimento: O projeto ainda está em desenvolvimento e futuras melhorias incluem a migração do armazenamento de imagens para Amazon S3 e a implantação em produção na nuvem.
+- Em Desenvolvimento: O projeto ainda está em desenvolvimento e futuras melhorias incluem a implantação em produção na nuvem.
