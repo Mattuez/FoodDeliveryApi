@@ -51,6 +51,7 @@ public class CatalogProductPictureService {
         PictureStorageService.NewPicture newPicture = PictureStorageService.NewPicture.builder()
                 .name(picture.getFileName())
                 .inputStream(inputStream)
+                .contentType(picture.getContentType())
                 .build();
 
         pictureStorageService.replace(newPicture, existingFileName);

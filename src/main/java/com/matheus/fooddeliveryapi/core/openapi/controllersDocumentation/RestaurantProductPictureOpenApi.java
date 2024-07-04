@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -36,7 +35,7 @@ public interface RestaurantProductPictureOpenApi {
             @ApiResponse(responseCode = "404", description = "Foto do produto não encontrada"),
             @ApiResponse(responseCode = "406", description = "Formato de mídia não aceito")
     })
-    ResponseEntity<InputStreamResource> getPicture(@Parameter(description = "Id do Restaurante", example = "1") Long restaurantId,
+    ResponseEntity<?> getPicture(@Parameter(description = "Id do Restaurante", example = "1") Long restaurantId,
                                                    @Parameter(description = "Id do Restaurante", example = "1") Long productId,
                                                    @Parameter(name = "accept", description = "Foto do produto", in = ParameterIn.HEADER, example = "image/jpeg") String acceptedMediaType)
             throws HttpMediaTypeNotAcceptableException;

@@ -53,14 +53,20 @@ spring:
           #introspection-uri: http://localhost:8081/oauth/check_token
           #client-id: checkToken
           #client-secret: check123
-
 server:
   forward-headers-strategy: native
 
-foodDeliveryApi:
+food-delivery-api:
   storage:
+    s3:
+      id-access-key:
+      secret-access-key:
+      bucket: food-delivery-api-bucket
+      region: eu-north-1
+      directory-photos: catalog
     local:
       pictures-directory: src/main/resources/photos
+    impl: local
   email:
     sender: FoodDelivery <fooddeliveryapiteste@gmail.com>
     impl: sand_box

@@ -1,29 +1,28 @@
 package com.matheus.fooddeliveryapi.infraestructure.service.storage;
 
+import com.matheus.fooddeliveryapi.core.storage.StorageProperties;
 import com.matheus.fooddeliveryapi.domain.exception.StorageException;
 import com.matheus.fooddeliveryapi.domain.service.PictureStorageService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
 import org.springframework.util.FileCopyUtils;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Service
+@AllArgsConstructor
 public class LocalPictureStorageService implements PictureStorageService {
 
-    @Value("${foodDeliveryApi.storage.local.pictures-directory}")
-    private Path pictureDirectory;
+    private StorageProperties storageProperties;
 
     @Override
-    public InputStream find(String fileName) {
+    public RetrievedPicture find(String fileName) {
         try {
             Path filePath = getFilePath(fileName);
 
-            return Files.newInputStream(filePath);
+            return RetrievedPicture.builder()
+                    .inputStream(Files.newInputStream(filePath))
+                    .build();
         } catch (Exception e) {
             throw new StorageException("It was not possible to find file", e);
         }
@@ -51,6 +50,7 @@ public class LocalPictureStorageService implements PictureStorageService {
     }
 
     private Path getFilePath(String fileName) {
-        return pictureDirectory.resolve(fileName);
+        return storageProperties.getLocal()
+                .getPicturesDirectory().resolve(fileName);
     }
 }
