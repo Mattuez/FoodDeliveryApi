@@ -2,14 +2,13 @@ package com.matheus.fooddeliveryapi.domain.service;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.io.InputStream;
 import java.util.UUID;
 
 public interface PictureStorageService {
 
-    InputStream find(String fileName);
+    RetrievedPicture find(String fileName);
     void store(NewPicture newPicture);
     void delete(String pictureName);
 
@@ -29,6 +28,18 @@ public interface PictureStorageService {
     @Builder
     class NewPicture {
         private String name;
+        private String contentType;
         private InputStream inputStream;
+    }
+
+    @Builder
+    @Getter
+    class RetrievedPicture {
+        private InputStream inputStream;
+        private String url;
+
+        public boolean hasUrl() {
+            return url != null;
+        }
     }
 }

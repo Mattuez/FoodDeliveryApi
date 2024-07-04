@@ -10,8 +10,10 @@ import com.matheus.fooddeliveryapi.domain.model.Product;
 import com.matheus.fooddeliveryapi.domain.model.ProductPicture;
 import com.matheus.fooddeliveryapi.domain.service.CatalogProductPictureService;
 import com.matheus.fooddeliveryapi.domain.service.PictureStorageService;
+import com.matheus.fooddeliveryapi.domain.service.PictureStorageService.RetrievedPicture;
 import com.matheus.fooddeliveryapi.domain.service.ProductRegistrationService;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -53,23 +54,29 @@ public class RestaurantProductPictureController implements RestaurantProductPict
 
     @Override
     @GetMapping
-    public ResponseEntity<InputStreamResource> getPicture(@PathVariable("restaurantId") Long restaurantId,
-                                                          @PathVariable("productId") Long productId,
-                                                          @RequestHeader(name = "accept") String acceptedMediaType)
+    public ResponseEntity<?> getPicture(@PathVariable("restaurantId") Long restaurantId,
+                                        @PathVariable("productId") Long productId,
+                                        @RequestHeader(name = "accept") String acceptedMediaType)
             throws HttpMediaTypeNotAcceptableException{
 
         try {
             ProductPicture picture = catalogProductPictureService.search(productId, restaurantId);
-            InputStream inputStream = pictureStorageService.find(picture.getFileName());
+            RetrievedPicture retrievedPicture = pictureStorageService.find(picture.getFileName());
 
             MediaType mediaTypePicture = MediaType.parseMediaType(picture.getContentType());
             List<MediaType> acceptedMediaTypes = MediaType.parseMediaTypes(acceptedMediaType);
 
             checkIfCompatible(acceptedMediaTypes, mediaTypePicture);
 
-            return ResponseEntity.ok()
-                    .contentType(mediaTypePicture)
-                    .body(new InputStreamResource(inputStream));
+            if (retrievedPicture.hasUrl()) {
+                return ResponseEntity.status(HttpStatus.FOUND)
+                        .header(HttpHeaders.LOCATION, retrievedPicture.getUrl())
+                        .build();
+            } else {
+                return ResponseEntity.ok()
+                        .contentType(mediaTypePicture)
+                        .body(new InputStreamResource(retrievedPicture.getInputStream()));
+            }
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
