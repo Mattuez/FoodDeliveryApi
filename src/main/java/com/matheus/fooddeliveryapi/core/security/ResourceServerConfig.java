@@ -32,6 +32,8 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                 .oauth2ResourceServer()
                 .jwt()
                 .jwtAuthenticationConverter(jwtAuthenticationConverter());
+
+        http.headers().cacheControl().disable();
     }
 
     private JwtAuthenticationConverter jwtAuthenticationConverter() {

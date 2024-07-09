@@ -30,17 +30,4 @@ public class StorageConfig {
             }
         }
     }
-
-    @Bean
-    public AmazonS3 amazonS3() {
-        var credentials = new BasicAWSCredentials(
-                storageProperties.getS3().getIdAccessKey(),
-                storageProperties.getS3().getSecretAccessKey()
-        );
-
-        return AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(storageProperties.getS3().getRegion())
-                .build();
-    }
 }

@@ -11,11 +11,14 @@ import com.matheus.fooddeliveryapi.domain.exception.EntityNotFoundException;
 import com.matheus.fooddeliveryapi.domain.exception.StateNotFoundException;
 import com.matheus.fooddeliveryapi.domain.model.City;
 import com.matheus.fooddeliveryapi.domain.service.CityRegistrationService;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/cities")
@@ -36,8 +39,19 @@ public class CityController implements CityOpenApi {
     @Override
     @CheckSecurity.City.canView
     @GetMapping
-    public List<CityDTO> getAll() {
-        return cityDTOAssembler.toCollectionDTO(cityRegistrationService.searchAll());
+    public ResponseEntity<List<CityDTO>> getAll() {
+
+        List<CityDTO> cityDTOs = cityDTOAssembler.toCollectionDTO(cityRegistrationService.searchAll());
+
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl
+                        .maxAge(10, TimeUnit.SECONDS)
+                        .cachePrivate()
+                        //.cachePublic()
+                        //.noCache() -> Cache sempre vai ter que ser validado. Sempre estará stale
+                        //.noStore() -> Desabilita o cache
+                )
+                .body(cityDTOs);
     }
 
     @Override
