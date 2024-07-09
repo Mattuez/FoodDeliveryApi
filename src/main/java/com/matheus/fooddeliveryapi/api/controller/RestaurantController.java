@@ -37,13 +37,11 @@ public class RestaurantController implements RestaurantOpenApi {
         this.restaurantInputDTODisassembler = restaurantInputDTODisassembler;
     }
 
-    @CheckSecurity.Restaurant.canView
     @GetMapping
     public List<RestaurantDTO> getAll() {
         return restaurantDTOAssembler.toCollectionDTO(restaurantRegistrationService.searchAll());
     }
 
-    @CheckSecurity.Restaurant.canView
     @GetMapping("/{restaurantId}")
     public RestaurantDTO getById(@PathVariable("restaurantId") Long restaurantId) {
         return restaurantDTOAssembler

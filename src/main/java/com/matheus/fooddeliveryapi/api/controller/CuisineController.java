@@ -33,7 +33,6 @@ public class CuisineController implements CuisineOpenApi {
         this.cuisineInputDTODisassembler = cuisineInputDTODisassembler;
     }
 
-    @CheckSecurity.Cuisines.CanView
     @GetMapping
     public Page<CuisineDTO> getAll(@PageableDefault(size = 10) Pageable pageable) {
         Page<Cuisine> cuisinePage = cuisineRegistrationService.searchAll(pageable);
@@ -43,7 +42,6 @@ public class CuisineController implements CuisineOpenApi {
         return new PageImpl<>(cuisineDTOList, pageable, cuisinePage.getTotalElements());
     }
 
-    @CheckSecurity.Cuisines.CanView
     @GetMapping("/{cuisineId}")
     public CuisineDTO getById(@PathVariable("cuisineId") Long cuisineId) {
         return cuisineDTOAssembler.toDTO(

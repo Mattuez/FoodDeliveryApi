@@ -37,7 +37,6 @@ public class RestaurantProductsController implements RestaurantProductOpenApi {
     }
 
     @Override
-    @CheckSecurity.Restaurant.canView
     @GetMapping
     public List<ProductDto> getAllByRestaurantId(@PathVariable("restaurantId") Long restaurantId,
                                                  @RequestParam(required = false) boolean includeInactive) {
@@ -50,7 +49,6 @@ public class RestaurantProductsController implements RestaurantProductOpenApi {
     }
 
     @Override
-    @CheckSecurity.Restaurant.canView
     @GetMapping("/{productId}")
     public ProductDto getById(@PathVariable("restaurantId") Long restaurantId,
                               @PathVariable("productId") Long productId) {
