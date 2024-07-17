@@ -22,6 +22,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import javax.sql.DataSource;
+import java.sql.Time;
 import java.util.Arrays;
 
 @Configuration
@@ -48,12 +49,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients
                 .inMemory()
-                    .withClient("FoodDelivery-web")
+                    .withClient("Yummies")
                         .secret(passwordEncoder.encode("web123"))
                     .authorizedGrantTypes("password", "refresh_token")
                     .scopes("WRITE", "READ")
-                    .accessTokenValiditySeconds(15 * 60)
-                    .refreshTokenValiditySeconds(60 * 60 * 2)
+                    .accessTokenValiditySeconds(60 * 60)
+                    .refreshTokenValiditySeconds(60 * 60 * 24 * 3)
                 .and()
                     .withClient("foodanalytics")
                     .secret(passwordEncoder.encode(""))

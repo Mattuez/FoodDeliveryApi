@@ -228,8 +228,8 @@ VALUES (1, 'matheuslins45@gmail.com', 'Matheus', '$2a$10$Ccv8haVOv24.VxSoQTsKPuf
        (3, 'ricardo.viana18@gmail.com', 'Ricardo', '$2a$12$uSUiREji1NDpfAe/UwsOk.DATfSdn3aOgvKr2cS0TnexYxdcWV0Qm', utc_timestamp),
        (4, 'example@gmail.com', 'example', '$2a$12$2G/Vv/KTTOoISwsGdjnQIeI7ZZ3ja.ULQ0lKNjvswMoSijwspQnla', utc_timestamp),
        (5, 'restaurantOwner@gmail.com', 'restaurantOwner', '$2a$12$2G/Vv/KTTOoISwsGdjnQIeI7ZZ3ja.ULQ0lKNjvswMoSijwspQnla', utc_timestamp),
-       (6, 'client1@gmail.com', 'client', '$2a$12$2G/Vv/KTTOoISwsGdjnQIeI7ZZ3ja.ULQ0lKNjvswMoSijwspQnla', utc_timestamp),
-       (7, 'client2@gmail.com', 'client', '$2a$12$2G/Vv/KTTOoISwsGdjnQIeI7ZZ3ja.ULQ0lKNjvswMoSijwspQnla', utc_timestamp);
+       (6, 'client1@gmail.com', 'client', '$2a$12$3OHrCnXpWL63tMWxEGc5k.bWmiNdEB.z6oyiGMTzvX.96GsIwDm8y', utc_timestamp),
+       (7, 'client2@gmail.com', 'client', '$2a$12$3OHrCnXpWL63tMWxEGc5k.bWmiNdEB.z6oyiGMTzvX.96GsIwDm8y', utc_timestamp);
 
 INSERT INTO user_access_level (user_id, access_level_id)
 VALUES (1, 1),

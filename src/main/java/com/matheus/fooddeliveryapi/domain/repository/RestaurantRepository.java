@@ -12,7 +12,7 @@ import java.util.List;
 public interface RestaurantRepository
         extends CustomJpaRepository<Restaurant, Long>, RestaurantRepositoryQueries, JpaSpecificationExecutor<Restaurant> {
 
-    @Query("from Restaurant r join fetch r.cuisine order by r.id")
+    @Query("from Restaurant r join fetch r.cuisine join fetch r.address.city join fetch r.address.city.state order by r.id")
     List<Restaurant> findAll();
 
     List<Restaurant> findByDeliveryFeeBetween(BigDecimal inicialDeliveryFee, BigDecimal finalDeliveryFee);
