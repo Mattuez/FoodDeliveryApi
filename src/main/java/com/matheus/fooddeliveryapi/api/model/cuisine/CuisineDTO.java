@@ -9,4 +9,5 @@ public class CuisineDTO {
 
         private Long id;
         private String name;
+        private String color;
 }

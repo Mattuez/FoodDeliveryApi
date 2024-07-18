@@ -71,13 +71,28 @@ ALTER TABLE `order`
 ALTER TABLE ordered_product
     AUTO_INCREMENT = 1;
 
-INSERT INTO cuisine (id, name)
-VALUES (1, 'Brazilian'),
-       (2, 'American'),
-       (3, 'Chinese'),
-       (4, 'Argentinian'),
-       (5, 'French'),
-       (6, 'Japanese');
+INSERT INTO cuisine (id, name, color)
+VALUES
+    (1, 'Brazilian', 'F2C14E'),
+    (2, 'American', 'C24641'),
+    (3, 'Chinese', 'F28500'),
+    (4, 'Argentinian', '99B433'),
+    (5, 'French', '9370DB'),
+    (6, 'Japanese', 'F25EA2'),
+    (7, 'Italian', 'F2D69B'),
+    (8, 'Mexican', 'F29669'),
+    (9, 'Indian', 'F2C864'),
+    (10, 'Thai', '95E06C'),
+    (11, 'Greek', 'F2D1B5'),
+    (12, 'Spanish', 'F27EA2'),
+    (13, 'Korean', 'F2668B'),
+    (14, 'Vietnamese', 'A9E4C9'),
+    (15, 'Portuguese', 'F2B099'),
+    (16, 'German', 'F29966'),
+    (17, 'Peruvian', 'F2C14E'),
+    (18, 'Moroccan', 'F29900'),
+    (19, 'Turkish', 'F2B099'),
+    (20, 'Lebanese', null);
 
 INSERT INTO state (id, name)
 VALUES (1, 'Paraíba'),
