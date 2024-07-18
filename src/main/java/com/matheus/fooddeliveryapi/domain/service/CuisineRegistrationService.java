@@ -17,6 +17,7 @@ import java.util.List;
 public class CuisineRegistrationService {
 
     public static final String MSG_CUISINE_BEING_USED = "Cuisine with code %d is being used and can't be removed";
+    private static final String WHITE = "FFFFFF";
 
     private CuisineRepository cuisineRepository;
 
@@ -39,6 +40,10 @@ public class CuisineRegistrationService {
 
     @Transactional
     public Cuisine insert(Cuisine cuisine) {
+        if (cuisine.getColor() == null) {
+            cuisine.setColor(WHITE);
+        }
+
         return cuisineRepository.save(cuisine);
     }
 

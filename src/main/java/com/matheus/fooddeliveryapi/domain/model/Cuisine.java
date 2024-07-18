@@ -27,6 +27,12 @@ public class Cuisine {
     )
     private String name;
 
+    @Column(
+            name = "color",
+            length = 6
+    )
+    private String color;
+
     @OneToMany(
             mappedBy = "cuisine"
     )
