@@ -3,6 +3,7 @@ package com.matheus.fooddeliveryapi.api.assembler.cuisine;
 import com.matheus.fooddeliveryapi.api.model.cuisine.CuisineDTO;
 import com.matheus.fooddeliveryapi.domain.model.Cuisine;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

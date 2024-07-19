@@ -14,5 +14,6 @@ public class RestaurantDTO {
     private CuisineDTO cuisine;
     private Boolean active;
     private Boolean opened;
+    private Boolean verified;
     private AddressDto address;
 }

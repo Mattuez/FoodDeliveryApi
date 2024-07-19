@@ -52,6 +52,12 @@ public class Restaurant {
     )
     private Boolean opened = Boolean.TRUE;
 
+    @Column(
+            name = "verified",
+            nullable = false
+    )
+    private Boolean verified = Boolean.FALSE;
+
     @Embedded
     private Address address;
 
@@ -160,5 +166,13 @@ public class Restaurant {
 
     public void removeAdmin(User admin) {
         this.getAdmins().remove(admin);
+    }
+
+    public void verify() {
+        this.setVerified(true);
+    }
+
+    public void unverify() {
+        this.setVerified(false);
     }
 }

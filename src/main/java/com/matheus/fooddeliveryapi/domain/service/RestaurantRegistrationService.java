@@ -140,4 +140,18 @@ public class RestaurantRegistrationService {
 
         restaurant.removeAdmin(admin);
     }
+
+    @Transactional
+    public void verifyRestaurant(Long restaurantId) {
+        Restaurant restaurant = search(restaurantId);
+
+        restaurant.verify();
+    }
+
+    @Transactional
+    public void unverifyRestaurant(Long restaurantId) {
+        Restaurant restaurant = search(restaurantId);
+
+        restaurant.unverify();
+    }
 }

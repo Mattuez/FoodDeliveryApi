@@ -9,7 +9,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 @Tag(name = "Cozinhas", description = "Gerencia os tipos de cozinha. Ex: italiana, japonesa, brasileira")
 public interface CuisineOpenApi {
@@ -19,7 +21,7 @@ public interface CuisineOpenApi {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Page.class)))
     })
-    Page<CuisineDTO> getAll(@Parameter(hidden = true) Pageable pageable);
+    ResponseEntity<List<CuisineDTO>> getAll();
 
     @Operation(summary = "Busca uma cozinha pelo ID", responses = {
             @ApiResponse(responseCode = "200", description = "Sucesso"),

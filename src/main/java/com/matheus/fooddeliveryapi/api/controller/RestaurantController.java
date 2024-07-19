@@ -79,7 +79,7 @@ public class RestaurantController implements RestaurantOpenApi {
     Just to have some reference to how to patch:
 
     @PatchMapping("/{restaurantId}")
-    public Restaurant parcialUpdate(@PathVariable("restaurantId") Long restaurantId, @RequestBody Map<String, Object> updatedFields,
+    public Restaurant partialUpdate(@PathVariable("restaurantId") Long restaurantId, @RequestBody Map<String, Object> updatedFields,
             HttpServletRequest request) {
         Restaurant existingRestaurant = restaurantRegistrationService.search(restaurantId);
 
@@ -146,6 +146,20 @@ public class RestaurantController implements RestaurantOpenApi {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deactivate(@PathVariable("restaurantId") Long restaurantId) {
         restaurantRegistrationService.deactivate(restaurantId);
+    }
+
+    @CheckSecurity.Restaurant.canManageAdministration
+    @PutMapping("/{restaurantId}/verified")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void verify(@PathVariable("restaurantId") Long restaurantId) {
+        restaurantRegistrationService.verifyRestaurant(restaurantId);
+    }
+
+    @CheckSecurity.Restaurant.canManageAdministration
+    @DeleteMapping("/{restaurantId}/verified")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void unverify(@PathVariable("restaurantId") Long restaurantId) {
+        restaurantRegistrationService.unverifyRestaurant(restaurantId);
     }
 
     @CheckSecurity.Restaurant.canManageAdministration

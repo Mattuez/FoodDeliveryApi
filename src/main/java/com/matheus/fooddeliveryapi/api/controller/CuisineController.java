@@ -8,15 +8,16 @@ import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.Cuisine
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.Cuisine;
 import com.matheus.fooddeliveryapi.domain.service.CuisineRegistrationService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.Duration;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/cuisines")
@@ -34,6 +35,16 @@ public class CuisineController implements CuisineOpenApi {
     }
 
     @GetMapping
+    public ResponseEntity<List<CuisineDTO>> getAll() {
+        List<CuisineDTO> cuisines = cuisineDTOAssembler.toCollectionDTO(cuisineRegistrationService.searchAll());
+
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS))
+                .body(cuisines);
+    }
+
+    /*
+    @GetMapping
     public Page<CuisineDTO> getAll(@PageableDefault(size = 10) Pageable pageable) {
         Page<Cuisine> cuisinePage = cuisineRegistrationService.searchAll(pageable);
 
@@ -41,6 +52,7 @@ public class CuisineController implements CuisineOpenApi {
 
         return new PageImpl<>(cuisineDTOList, pageable, cuisinePage.getTotalElements());
     }
+    */
 
     @GetMapping("/{cuisineId}")
     public CuisineDTO getById(@PathVariable("cuisineId") Long cuisineId) {
