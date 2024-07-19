@@ -2,6 +2,7 @@ package com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation;
 
 import com.matheus.fooddeliveryapi.api.model.restaurant.RestaurantDTO;
 import com.matheus.fooddeliveryapi.api.model.restaurant.RestaurantInputDTO;
+import com.matheus.fooddeliveryapi.domain.filter.RestaurantFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,7 +16,7 @@ public interface RestaurantOpenApi {
     @Operation(summary = "Lista os restaurantes", responses = {
             @ApiResponse(responseCode = "200", description = "Sucesso")
     })
-    List<RestaurantDTO> getAll();
+    List<RestaurantDTO> getAll(RestaurantFilter restaurantFilter);
 
     @Operation(summary = "Busca um restaurante por ID", responses = {
             @ApiResponse(responseCode = "200", description = "Sucesso"),
