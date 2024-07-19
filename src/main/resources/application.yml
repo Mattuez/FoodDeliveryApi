@@ -65,8 +65,8 @@ food-delivery-api:
       region: eu-north-1
       directory-photos: catalog
     local:
-      pictures-directory: src/main/resources/photos
-    impl: local
+      pictures-directory: src/main/resources/pictures
+    impl: S3
   email:
     sender: FoodDelivery <fooddeliveryapiteste@gmail.com>
     impl: sand_box
