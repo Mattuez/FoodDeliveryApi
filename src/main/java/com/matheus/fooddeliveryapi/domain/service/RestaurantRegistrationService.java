@@ -2,8 +2,10 @@ package com.matheus.fooddeliveryapi.domain.service;
 
 import com.matheus.fooddeliveryapi.domain.exception.EntityBeingUsedException;
 import com.matheus.fooddeliveryapi.domain.exception.RestaurantNotFoundException;
+import com.matheus.fooddeliveryapi.domain.filter.RestaurantFilter;
 import com.matheus.fooddeliveryapi.domain.model.*;
 import com.matheus.fooddeliveryapi.domain.repository.RestaurantRepository;
+import com.matheus.fooddeliveryapi.infraestructure.repository.spec.RestaurantSpecs;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -34,8 +36,8 @@ public class RestaurantRegistrationService {
         this.userRegistrationService = userRegistrationService;
     }
 
-    public List<Restaurant> searchAll() {
-        return restaurantRepository.findAll();
+    public List<Restaurant> searchAll(RestaurantFilter filter) {
+        return restaurantRepository.findAll(RestaurantSpecs.usingFilter(filter));
     }
 
     public Restaurant search(Long restaurantId) {

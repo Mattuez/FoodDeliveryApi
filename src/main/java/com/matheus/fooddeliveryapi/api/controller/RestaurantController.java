@@ -9,6 +9,7 @@ import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.exception.BusinessException;
 import com.matheus.fooddeliveryapi.domain.exception.CityNotFoundException;
 import com.matheus.fooddeliveryapi.domain.exception.CuisineNotFoundException;
+import com.matheus.fooddeliveryapi.domain.filter.RestaurantFilter;
 import com.matheus.fooddeliveryapi.domain.model.Restaurant;
 import com.matheus.fooddeliveryapi.domain.service.RestaurantRegistrationService;
 import org.springframework.http.HttpStatus;
@@ -38,8 +39,9 @@ public class RestaurantController implements RestaurantOpenApi {
     }
 
     @GetMapping
-    public List<RestaurantDTO> getAll() {
-        return restaurantDTOAssembler.toCollectionDTO(restaurantRegistrationService.searchAll());
+    public List<RestaurantDTO> getAll(RestaurantFilter restaurantFilter) {
+        return restaurantDTOAssembler
+                .toCollectionDTO(restaurantRegistrationService.searchAll(restaurantFilter));
     }
 
     @GetMapping("/{restaurantId}")
