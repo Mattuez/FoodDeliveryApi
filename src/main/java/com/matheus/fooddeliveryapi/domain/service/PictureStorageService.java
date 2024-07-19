@@ -2,8 +2,11 @@ package com.matheus.fooddeliveryapi.domain.service;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.http.MediaType;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 public interface PictureStorageService {
@@ -22,6 +25,16 @@ public interface PictureStorageService {
 
     default String generateFileName(String originalName) {
         return "%s_%s".formatted(UUID.randomUUID(), originalName);
+    }
+
+    default void checkIfCompatible(List<MediaType> acceptedMediaTypes, MediaType mediaTypePicture)
+            throws HttpMediaTypeNotAcceptableException {
+        boolean compatible = acceptedMediaTypes.stream()
+                .anyMatch(obj -> obj.isCompatibleWith(mediaTypePicture));
+
+        if (!compatible) {
+            throw new HttpMediaTypeNotAcceptableException(acceptedMediaTypes);
+        }
     }
 
     @Getter

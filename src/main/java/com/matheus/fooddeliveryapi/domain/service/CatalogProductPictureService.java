@@ -1,11 +1,8 @@
 package com.matheus.fooddeliveryapi.domain.service;
 
-import com.matheus.fooddeliveryapi.domain.exception.PictureNotFound;
-import com.matheus.fooddeliveryapi.domain.model.Product;
+import com.matheus.fooddeliveryapi.domain.exception.ProductPictureNotFoundException;
 import com.matheus.fooddeliveryapi.domain.model.ProductPicture;
-import com.matheus.fooddeliveryapi.domain.model.Restaurant;
 import com.matheus.fooddeliveryapi.domain.repository.ProductPictureRepository;
-import com.matheus.fooddeliveryapi.infraestructure.service.storage.LocalPictureStorageService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +23,7 @@ public class CatalogProductPictureService {
 
     public ProductPicture search(Long productId, Long restaurantId) {
         return pictureRepository.findByProductIdAndRestaurantId(productId, restaurantId)
-                .orElseThrow(() -> new PictureNotFound(productId, restaurantId));
+                .orElseThrow(() -> new ProductPictureNotFoundException(productId, restaurantId));
     }
 
     @Transactional
