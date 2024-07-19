@@ -66,7 +66,7 @@ food-delivery-api:
       directory-photos: catalog
     local:
       pictures-directory: src/main/resources/pictures
-    impl: local
+    impl: S3
   email:
     sender: FoodDelivery <fooddeliveryapiteste@gmail.com>
     impl: sand_box
