@@ -1,7 +1,7 @@
 package com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation;
 
-import com.matheus.fooddeliveryapi.api.model.products.picture.ProductPictureDto;
-import com.matheus.fooddeliveryapi.api.model.products.picture.ProductPictureInputDto;
+import com.matheus.fooddeliveryapi.api.model.picture.PictureDto;
+import com.matheus.fooddeliveryapi.api.model.picture.PictureInputDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -22,7 +22,7 @@ public interface RestaurantProductPictureOpenApi {
             @ApiResponse(responseCode = "200", description = "Sucesso"),
             @ApiResponse(responseCode = "404", description = "Foto do produto não encontrada")
     })
-    ProductPictureDto getPictureData(
+    PictureDto getPictureData(
             @Parameter(description = "ID do restaurante", example = "1") Long restaurantId,
             @Parameter(description = "ID do produto", example = "2") Long productId);
 
@@ -44,13 +44,13 @@ public interface RestaurantProductPictureOpenApi {
             @ApiResponse(responseCode = "200", description = "Foto do produto atualizada"),
             @ApiResponse(responseCode = "404", description = "Produto não encontrado")
     })
-    ProductPictureDto updatePicture(
+    PictureDto updatePicture(
             @Parameter(description = "ID do restaurante", example = "1") Long restaurantId,
             @Parameter(description = "ID do produto", example = "2") Long productId,
             @Parameter(name = "corpo", description = "Nova foto do produto",
                     content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
-                            schema = @Schema(implementation = ProductPictureInputDto.class)), required = true)
-            ProductPictureInputDto inputProductPicture) throws IOException;
+                            schema = @Schema(implementation = PictureInputDto.class)), required = true)
+            PictureInputDto inputProductPicture) throws IOException;
 
     @Operation(summary = "Exclui a foto do produto", responses = {
             @ApiResponse(responseCode = "204", description = "Foto do produto excluída"),

@@ -1,4 +1,4 @@
-package com.matheus.fooddeliveryapi.api.model.products.picture;
+package com.matheus.fooddeliveryapi.api.model.picture;
 
 import com.matheus.fooddeliveryapi.core.validation.annotation.FileContentType;
 import com.matheus.fooddeliveryapi.core.validation.annotation.FileSize;
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class ProductPictureInputDto {
+public class PictureInputDto {
 
     @NotNull
     @FileSize(max = "500KB")

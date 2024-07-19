@@ -14,7 +14,7 @@ public class Picture {
 
     @Id
     @EqualsAndHashCode.Include
-    @Column(name = "product_id")
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "file_name")

@@ -3,15 +3,15 @@ package com.matheus.fooddeliveryapi.api.controller;
 import com.matheus.fooddeliveryapi.api.assembler.picture.PictureDtoAssembler;
 import com.matheus.fooddeliveryapi.api.model.picture.PictureDto;
 import com.matheus.fooddeliveryapi.api.model.picture.PictureInputDto;
-import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.RestaurantProductPictureOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.exception.EntityNotFoundException;
+import com.matheus.fooddeliveryapi.domain.model.Cuisine;
+import com.matheus.fooddeliveryapi.domain.model.CuisinePicture;
 import com.matheus.fooddeliveryapi.domain.model.Product;
 import com.matheus.fooddeliveryapi.domain.model.ProductPicture;
-import com.matheus.fooddeliveryapi.domain.service.CatalogProductPictureService;
+import com.matheus.fooddeliveryapi.domain.service.CuisinePictureService;
+import com.matheus.fooddeliveryapi.domain.service.CuisineRegistrationService;
 import com.matheus.fooddeliveryapi.domain.service.PictureStorageService;
-import com.matheus.fooddeliveryapi.domain.service.PictureStorageService.RetrievedPicture;
-import com.matheus.fooddeliveryapi.domain.service.ProductRegistrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -28,32 +28,28 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/restaurants/{restaurantId}/products/{productId}/picture")
-public class RestaurantProductPictureController implements RestaurantProductPictureOpenApi {
+@RequestMapping("/cuisines/{cuisineId}/picture")
+public class CuisinePictureController {
 
-    private CatalogProductPictureService catalogProductPictureService;
-    private ProductRegistrationService productRegistrationService;
-    private PictureDtoAssembler<ProductPicture> pictureDtoAssembler;
+    private CuisineRegistrationService cuisineRegistrationService;
+    private PictureDtoAssembler<CuisinePicture> picturePictureDtoAssembler;
+    private CuisinePictureService cuisinePictureService;
     private PictureStorageService pictureStorageService;
 
-    @Override
     @CheckSecurity.Restaurant.canView
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public PictureDto getPictureData(@PathVariable("restaurantId") Long restaurantId,
-                                     @PathVariable("productId") Long productId) {
-        return pictureDtoAssembler.toDto(catalogProductPictureService.search(productId, restaurantId));
+    public PictureDto getPictureData(@PathVariable("cuisineId") Long cuisineId) {
+        return picturePictureDtoAssembler.toDto(cuisinePictureService.search(cuisineId));
     }
 
-    @Override
     @GetMapping
-    public ResponseEntity<?> getPicture(@PathVariable("restaurantId") Long restaurantId,
-                                        @PathVariable("productId") Long productId,
+    public ResponseEntity<?> getPicture(@PathVariable("cuisineId") Long cuisineId,
                                         @RequestHeader(name = "accept") String acceptedMediaType)
-            throws HttpMediaTypeNotAcceptableException{
+            throws HttpMediaTypeNotAcceptableException {
 
         try {
-            ProductPicture picture = catalogProductPictureService.search(productId, restaurantId);
-            RetrievedPicture retrievedPicture = pictureStorageService.find(picture.getFileName());
+            CuisinePicture picture = cuisinePictureService.search(cuisineId);
+            PictureStorageService.RetrievedPicture retrievedPicture = pictureStorageService.find(picture.getFileName());
 
             MediaType mediaTypePicture = MediaType.parseMediaType(picture.getContentType());
             List<MediaType> acceptedMediaTypes = MediaType.parseMediaTypes(acceptedMediaType);
@@ -74,32 +70,28 @@ public class RestaurantProductPictureController implements RestaurantProductPict
         }
     }
 
-    @Override
     @CheckSecurity.Restaurant.canManageOperation
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public PictureDto updatePicture(@PathVariable("restaurantId") Long restaurantId,
-                                    @PathVariable("productId") Long productId,
+    public PictureDto updatePicture(@PathVariable("cuisineId") Long cuisineId,
                                     @Valid PictureInputDto inputProductPicture) throws IOException {
 
-        Product product = productRegistrationService.search(productId, restaurantId);
+        Cuisine cuisine = cuisineRegistrationService.search(cuisineId);
         MultipartFile file = inputProductPicture.getFile();
 
-        ProductPicture picture = new ProductPicture();
-        picture.setProduct(product);
+        CuisinePicture picture = new CuisinePicture();
+        picture.setCuisine(cuisine);
         picture.setDescription(inputProductPicture.getDescription());
         picture.setFileName(file.getOriginalFilename());
         picture.setSize(file.getSize());
         picture.setContentType(file.getContentType());
 
-        return pictureDtoAssembler.toDto(catalogProductPictureService.save(picture, file.getInputStream()));
+        return picturePictureDtoAssembler.toDto(cuisinePictureService.save(picture, file.getInputStream()));
     }
 
-    @Override
     @CheckSecurity.Restaurant.canManageOperation
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePicture(@PathVariable("restaurantId") Long restaurantId,
-                              @PathVariable("productId") Long productId) {
-        catalogProductPictureService.delete(productId, restaurantId);
+    public void deletePicture(@PathVariable("cuisineId") Long cuisineId) {
+        cuisinePictureService.delete(cuisineId);
     }
 }

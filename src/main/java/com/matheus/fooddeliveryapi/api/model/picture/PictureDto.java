@@ -1,13 +1,11 @@
-package com.matheus.fooddeliveryapi.api.model.products.picture;
+package com.matheus.fooddeliveryapi.api.model.picture;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-
 @Getter
 @Setter
-public class ProductPictureDto {
+public class PictureDto {
 
     private String fileName;
     private String description;
