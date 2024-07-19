@@ -5,7 +5,6 @@ import com.matheus.fooddeliveryapi.api.model.accessLevel.AccessLevelDto;
 import com.matheus.fooddeliveryapi.core.openapi.controllersDocumentation.UserAccessLevelOpenApi;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.model.User;
-import com.matheus.fooddeliveryapi.domain.service.AccessLevelRegistrationService;
 import com.matheus.fooddeliveryapi.domain.service.UserRegistrationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +29,7 @@ public class UserAccessLevelController implements UserAccessLevelOpenApi {
     public List<AccessLevelDto> getAllByUserId(@PathVariable("userId") Long userId) {
         User user = userRegistrationService.search(userId);
 
-        return accessLevelDtoAssembler.toDtoCollection(user.getAccessLevel());
+        return accessLevelDtoAssembler.toDtoCollection(user.getAccessLevels());
     }
 
     @CheckSecurity.UserGroupAccessLevel.canAlter

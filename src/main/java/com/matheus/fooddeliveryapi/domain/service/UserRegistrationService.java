@@ -5,8 +5,10 @@ import com.matheus.fooddeliveryapi.domain.exception.BusinessException;
 import com.matheus.fooddeliveryapi.domain.exception.EntityBeingUsedException;
 import com.matheus.fooddeliveryapi.domain.exception.UserNotFoundException;
 import com.matheus.fooddeliveryapi.domain.model.AccessLevel;
+import com.matheus.fooddeliveryapi.domain.model.Restaurant;
 import com.matheus.fooddeliveryapi.domain.model.User;
 import com.matheus.fooddeliveryapi.domain.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,19 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class UserRegistrationService {
 
     private UserRepository userRepository;
     private AccessLevelRegistrationService accessLevelService;
     private PasswordEncoder passwordEncoder;
-
-    public UserRegistrationService(UserRepository userRepository, AccessLevelRegistrationService accessLevelService,
-                                   PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.accessLevelService = accessLevelService;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public List<User> searchAll() {
         return userRepository.findAll();
@@ -93,6 +89,20 @@ public class UserRegistrationService {
         AccessLevel accessLevel = accessLevelService.search(accessLevelId);
 
         user.removeAccessLevel(accessLevel);
+    }
+
+    @Transactional
+    public void addFavoriteRestaurant(Long userId, Restaurant restaurant) {
+        User user = search(userId);
+
+        user.addFavoriteRestaurant(restaurant);
+    }
+
+    @Transactional
+    public void removeFavoriteRestaurant(Long userId, Restaurant restaurant) {
+        User user = search(userId);
+
+        user.removeFavoriteRestaurant(restaurant);
     }
 
     private String encryptPassword(String password) {

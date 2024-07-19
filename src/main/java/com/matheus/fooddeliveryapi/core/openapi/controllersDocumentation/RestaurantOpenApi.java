@@ -84,4 +84,18 @@ public interface RestaurantOpenApi {
             @ApiResponse(responseCode = "404", description = "Restaurante não encontrado")
     })
     void closed(@Parameter(description = "ID do restaurante", example = "1") Long restaurantId);
+
+    @Operation(summary = "Verifica restaurante", responses = {
+            @ApiResponse(responseCode = "204", description = "Restaurante aberto com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Formato do ID inválido(deve ser um número inteiro)."),
+            @ApiResponse(responseCode = "404", description = "Restaurante não encontrado")
+    })
+    void verify(@Parameter(description = "ID do restaurante", example = "1") Long restaurantId);
+
+    @Operation(summary = "Desverifica restaurante", responses = {
+            @ApiResponse(responseCode = "204", description = "Restaurante fechado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Formato do ID inválido(deve ser um número inteiro)."),
+            @ApiResponse(responseCode = "404", description = "Restaurante não encontrado")
+    })
+    void unverify(@Parameter(description = "ID do restaurante", example = "1") Long restaurantId);
 }
