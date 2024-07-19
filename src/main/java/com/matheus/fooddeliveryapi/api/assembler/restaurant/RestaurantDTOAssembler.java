@@ -5,6 +5,7 @@ import com.matheus.fooddeliveryapi.domain.model.Restaurant;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -20,7 +21,7 @@ public class RestaurantDTOAssembler {
         return modelMapper.map(restaurant, RestaurantDTO.class);
     }
 
-    public List<RestaurantDTO> toCollectionDTO(List<Restaurant> restaurants) {
+    public List<RestaurantDTO> toCollectionDTO(Collection<Restaurant> restaurants) {
         return restaurants.stream()
                 .map(restaurant -> toDTO(restaurant))
                 .toList();

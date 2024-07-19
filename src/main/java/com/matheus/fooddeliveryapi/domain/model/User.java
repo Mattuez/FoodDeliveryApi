@@ -62,13 +62,39 @@ public class User {
                     )
             )
     )
-    private Set<AccessLevel> accessLevel;
+    private Set<AccessLevel> accessLevels;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorites_restaurants",
+            joinColumns = @JoinColumn(
+                    name = "use_id",
+                    foreignKey = @ForeignKey(
+                            name = "fk_user_favorites_restaurants_user_user_id"
+                    )
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "restaurant_id",
+                    foreignKey = @ForeignKey(
+                            name = "fk_user_favorites_restaurants_restaurants_restaurants_id"
+                    )
+            )
+    )
+    private Set<Restaurant> favoritesRestaurants;
 
     public void addAccessLevel(AccessLevel accessLevel) {
-        this.accessLevel.add(accessLevel);
+        this.accessLevels.add(accessLevel);
     }
 
     public void removeAccessLevel(AccessLevel accessLevel) {
-        this.accessLevel.remove(accessLevel);
+        this.accessLevels.remove(accessLevel);
+    }
+
+    public void addFavoriteRestaurant(Restaurant restaurant) {
+        this.getFavoritesRestaurants().add(restaurant);
+    }
+
+    public void removeFavoriteRestaurant(Restaurant restaurant) {
+        this.getFavoritesRestaurants().remove(restaurant);
     }
 }

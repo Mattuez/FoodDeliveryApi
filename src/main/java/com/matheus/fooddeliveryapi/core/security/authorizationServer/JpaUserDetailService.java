@@ -34,7 +34,7 @@ public class JpaUserDetailService implements UserDetailsService {
     }
 
     private Collection<GrantedAuthority> getAuthorities(User user) {
-        return user.getAccessLevel().stream()
+        return user.getAccessLevels().stream()
                 .flatMap(group -> group.getPermissions().stream())
                 .map(permission -> new SimpleGrantedAuthority(permission.getName().toUpperCase()))
                 .collect(Collectors.toSet());
