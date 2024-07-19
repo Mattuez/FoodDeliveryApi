@@ -5,11 +5,11 @@ import com.matheus.fooddeliveryapi.api.model.picture.PictureDto;
 import com.matheus.fooddeliveryapi.api.model.picture.PictureInputDto;
 import com.matheus.fooddeliveryapi.core.security.CheckSecurity;
 import com.matheus.fooddeliveryapi.domain.exception.EntityNotFoundException;
-import com.matheus.fooddeliveryapi.domain.model.Cuisine;
-import com.matheus.fooddeliveryapi.domain.model.CuisinePicture;
-import com.matheus.fooddeliveryapi.domain.service.CatalogCuisinePictureService;
-import com.matheus.fooddeliveryapi.domain.service.CuisineRegistrationService;
+import com.matheus.fooddeliveryapi.domain.model.Restaurant;
+import com.matheus.fooddeliveryapi.domain.model.RestaurantPicture;
+import com.matheus.fooddeliveryapi.domain.service.CatalogRestaurantPictureService;
 import com.matheus.fooddeliveryapi.domain.service.PictureStorageService;
+import com.matheus.fooddeliveryapi.domain.service.RestaurantRegistrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -26,27 +26,27 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/cuisines/{cuisineId}/picture")
-public class CuisinePictureController {
+@RequestMapping("/restaurants/{restaurantId}/picture")
+public class RestaurantPictureController {
 
-    private CuisineRegistrationService cuisineRegistrationService;
-    private PictureDtoAssembler<CuisinePicture> picturePictureDtoAssembler;
-    private CatalogCuisinePictureService catalogCuisinePictureService;
+    private RestaurantRegistrationService restaurantRegistrationService;
+    private PictureDtoAssembler<RestaurantPicture> picturePictureDtoAssembler;
+    private CatalogRestaurantPictureService catalogRestaurantPictureService;
     private PictureStorageService pictureStorageService;
 
     @CheckSecurity.Restaurant.canView
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public PictureDto getPictureData(@PathVariable("cuisineId") Long cuisineId) {
-        return picturePictureDtoAssembler.toDto(catalogCuisinePictureService.search(cuisineId));
+    public PictureDto getPictureData(@PathVariable("restaurantId") Long restaurantId) {
+        return picturePictureDtoAssembler.toDto(catalogRestaurantPictureService.search(restaurantId));
     }
 
     @GetMapping
-    public ResponseEntity<?> getPicture(@PathVariable("cuisineId") Long cuisineId,
+    public ResponseEntity<?> getPicture(@PathVariable("restaurantId") Long restaurantId,
                                         @RequestHeader(name = "accept") String acceptedMediaType)
             throws HttpMediaTypeNotAcceptableException {
 
         try {
-            CuisinePicture picture = catalogCuisinePictureService.search(cuisineId);
+            RestaurantPicture picture = catalogRestaurantPictureService.search(restaurantId);
             PictureStorageService.RetrievedPicture retrievedPicture = pictureStorageService.find(picture.getFileName());
 
             MediaType mediaTypePicture = MediaType.parseMediaType(picture.getContentType());
@@ -70,26 +70,26 @@ public class CuisinePictureController {
 
     @CheckSecurity.Restaurant.canManageOperation
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public PictureDto updatePicture(@PathVariable("cuisineId") Long cuisineId,
+    public PictureDto updatePicture(@PathVariable("restaurantId") Long restaurantId,
                                     @Valid PictureInputDto inputProductPicture) throws IOException {
 
-        Cuisine cuisine = cuisineRegistrationService.search(cuisineId);
+        Restaurant restaurant = restaurantRegistrationService.search(restaurantId);
         MultipartFile file = inputProductPicture.getFile();
 
-        CuisinePicture picture = new CuisinePicture();
-        picture.setCuisine(cuisine);
+        RestaurantPicture picture = new RestaurantPicture();
+        picture.setRestaurant(restaurant);
         picture.setDescription(inputProductPicture.getDescription());
         picture.setFileName(file.getOriginalFilename());
         picture.setSize(file.getSize());
         picture.setContentType(file.getContentType());
 
-        return picturePictureDtoAssembler.toDto(catalogCuisinePictureService.save(picture, file.getInputStream()));
+        return picturePictureDtoAssembler.toDto(catalogRestaurantPictureService.save(picture, file.getInputStream()));
     }
 
     @CheckSecurity.Restaurant.canManageOperation
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePicture(@PathVariable("cuisineId") Long cuisineId) {
-        catalogCuisinePictureService.delete(cuisineId);
+    public void deletePicture(@PathVariable("restaurantId") Long restaurantId) {
+        catalogRestaurantPictureService.delete(restaurantId);
     }
 }

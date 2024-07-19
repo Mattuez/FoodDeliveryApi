@@ -2,7 +2,6 @@ package com.matheus.fooddeliveryapi.domain.service;
 
 import com.matheus.fooddeliveryapi.domain.exception.CuisinePictureNotFoundException;
 import com.matheus.fooddeliveryapi.domain.model.CuisinePicture;
-import com.matheus.fooddeliveryapi.domain.model.ProductPicture;
 import com.matheus.fooddeliveryapi.domain.repository.CuisinePictureRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Service
-public class CuisinePictureService {
+public class CatalogCuisinePictureService {
 
     private CuisinePictureRepository pictureRepository;
     private PictureStorageService pictureStorageService;

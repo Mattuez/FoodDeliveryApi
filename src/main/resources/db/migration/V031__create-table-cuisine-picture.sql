@@ -7,6 +7,6 @@ create table cuisine_picture
     size         int          not null,
 
     primary key (cuisine_id),
-    constraint fk_cuisine_picture_product foreign key (cuisine_id) references cuisine (id)
+    constraint fk_cuisine_picture foreign key (cuisine_id) references cuisine (id)
 ) engine = InnoDB
   default charset = utf8;
