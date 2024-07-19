@@ -65,7 +65,7 @@ food-delivery-api:
       region: eu-north-1
       directory-photos: catalog
     local:
-      pictures-directory: src/main/resources/photos
+      pictures-directory: src/main/resources/pictures
     impl: local
   email:
     sender: FoodDelivery <fooddeliveryapiteste@gmail.com>
